@@ -9,168 +9,289 @@
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --navy: #1A1A2E;
-            --gold: #FFB400;
+            --cyan: #53FBFE;
+            --blue-deep: #1B243E;
+            --dark: #151E30;
         }
         body {
             font-family: 'Sora', sans-serif;
             scroll-behavior: smooth;
-            background-color: var(--navy);
+            background-color: var(--dark);
             color: #FFFFFF;
+            overflow-x: hidden;
         }
         .glass-panel {
-            background: rgba(26, 26, 46, 0.7);
-            backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 180, 0, 0.15);
+            background: rgba(27, 36, 62, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(83, 251, 254, 0.1);
+            transition: border 0.3s ease, transform 0.3s ease;
         }
-        .btn-gold {
-            background-color: var(--gold);
-            color: var(--navy);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        .glass-panel:hover {
+            border-color: rgba(83, 251, 254, 0.3);
         }
-        .btn-gold:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(255, 180, 0, 0.3);
+        .cyan-text { color: var(--cyan); }
+        .bg-cyan { background-color: var(--cyan); }
+        
+        .btn-action {
+            background-color: var(--cyan);
+            color: var(--dark);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
         }
-        .img-overlay {
-            background: linear-gradient(to bottom, rgba(26, 26, 46, 0.9), rgba(26, 26, 46, 0.6), rgba(26, 26, 46, 0.9));
+        .btn-action:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(83, 251, 254, 0.3);
         }
-        .text-glow {
-            text-shadow: 0 0 20px rgba(255, 180, 0, 0.5);
+
+        /* Эффект блика на кнопках */
+        .btn-action::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 20%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.4);
+            transform: rotate(30deg);
+            transition: all 0.6s ease;
         }
-        .bg-card-img {
-            background-size: cover;
-            background-position: center;
+        .btn-action:hover::after {
+            left: 120%;
+        }
+
+        .hero-gradient {
+            background: radial-gradient(circle at 10% 20%, rgba(83, 251, 254, 0.08) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 80%, rgba(83, 251, 254, 0.04) 0%, transparent 40%);
+        }
+
+        /* Анимация появления при скролле */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .status-pulse {
+            width: 8px;
+            height: 8px;
+            background-color: var(--cyan);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--cyan);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Плавающие сферы на фоне */
+        .floating-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+            opacity: 0.15;
+            pointer-events: none;
+            animation: float 15s infinite alternate ease-in-out;
+        }
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(100px, 50px); }
+        }
+
+        /* Анимация графиков */
+        .bar-animate {
+            height: 0;
+            transition: height 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .active .bar-animate {
+            height: var(--target-height);
         }
     </style>
 </head>
-<body class="antialiased selection:bg-[#FFB400]/30">
+<body class="antialiased selection:bg-[#53FBFE]/30">
+
+    <!-- Фоновые сферы -->
+    <div class="floating-orb w-96 h-96 bg-[#53FBFE] top-20 -left-20"></div>
+    <div class="floating-orb w-[500px] h-[500px] bg-blue-600 bottom-20 -right-20" style="animation-delay: -5s;"></div>
 
     <!-- Навигация -->
-    <nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-[#1A1A2E]/80 backdrop-blur-xl">
+    <nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-[#151E30]/60 backdrop-blur-xl">
         <div class="container mx-auto px-6 py-5 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <div class="w-8 h-8 bg-[#FFB400] rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(255,180,0,0.3)]">
-                    <i data-lucide="shield" class="w-5 h-5 text-[#1A1A2E]"></i>
+                <div class="w-10 h-10 bg-[#53FBFE] rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(83,251,254,0.3)] hover:rotate-12 transition-transform">
+                    <i data-lucide="shield-check" class="w-6 h-6 text-[#151E30]"></i>
                 </div>
-                <span class="text-xl font-bold tracking-tighter uppercase italic">PrivateTunnel <span class="text-[#FFB400]">2026</span></span>
+                <span class="text-xl font-extrabold tracking-tighter uppercase">PrivateTunnel <span class="cyan-text font-light italic">2026</span></span>
             </div>
-            <a href="https://t.me/your_username" class="hidden md:block text-xs font-bold uppercase tracking-[0.3em] text-[#FFB400] hover:text-white transition-all">
-                Оставить заявку
+            <a href="https://t.me/your_username" class="hidden md:flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.3em] text-[#53FBFE] group transition-all">
+                <span class="status-pulse"></span> 
+                <span class="group-hover:text-white">Линия активна</span>
             </a>
         </div>
     </nav>
 
-    <!-- Главный экран -->
-    <section class="relative min-h-screen flex items-center pt-20 overflow-hidden">
-        <!-- Фоновое изображение Hero -->
-        <div class="absolute inset-0 z-0">
-            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=2000" alt="[Изображение цифрового фона]" class="w-full h-full object-cover">
-            <div class="absolute inset-0 img-overlay"></div>
+    <!-- Главный блок -->
+    <section class="relative min-h-screen flex items-center pt-24 overflow-hidden hero-gradient">
+        <div class="absolute inset-0 z-0 opacity-10 scale-110">
+            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=2000" alt="[Фон кибербезопасности]" class="w-full h-full object-cover">
         </div>
 
         <div class="container mx-auto px-6 relative z-10">
-            <div class="max-w-5xl">
-                <div class="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-[#FFB400]/10 border border-[#FFB400]/20 text-[#FFB400] text-[10px] font-bold uppercase tracking-[0.4em] mb-10">
-                    <span class="w-2 h-2 rounded-full bg-[#FFB400] animate-pulse"></span>
-                    Reality V3.0 • 2026 Edition
-                </div>
-                <h1 class="text-5xl md:text-[7.5rem] font-extrabold mb-8 leading-[0.85] tracking-tighter uppercase">
-                    Ваш личный сервер <br> 
-                    <span class="text-[#FFB400] italic text-glow underline decoration-1 underline-offset-8">без лагов и пауз</span>
-                </h1>
-                <p class="text-lg md:text-2xl text-white/60 mb-14 max-w-2xl font-light leading-relaxed">
-                    Забудьте о медленных VPN. Пользуйтесь интернетом на скорости до 1 Гбит/с. YouTube в 4K работает без подгрузок. Настройка занимает 1 час.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-6">
-                    <a href="https://t.me/your_username" class="btn-gold px-12 py-6 rounded-2xl font-extrabold text-xl uppercase tracking-tighter flex items-center justify-center gap-4 shadow-2xl">
-                        <i data-lucide="send" class="w-6 h-6"></i>
-                        Написать в Telegram
-                    </a>
-                    <div class="flex items-center gap-5 px-8 py-5 glass-panel rounded-2xl">
-                        <div class="flex -space-x-4">
-                            <div class="w-12 h-12 rounded-full bg-[#1A1A2E] border border-[#FFB400]/30 flex items-center justify-center text-[10px] font-bold shadow-lg">4K</div>
-                            <div class="w-12 h-12 rounded-full bg-[#1A1A2E] border border-[#FFB400]/30 flex items-center justify-center text-[10px] font-bold shadow-lg">GPT</div>
+            <div class="flex flex-col lg:flex-row items-center gap-20">
+                <div class="lg:w-3/5 reveal active">
+                    <div class="inline-flex items-center gap-3 px-4 py-2 rounded-lg bg-[#53FBFE]/5 border border-[#53FBFE]/20 text-[#53FBFE] text-[10px] font-bold uppercase tracking-[0.4em] mb-10">
+                        Reality Protocol v3.0 • Stealth Mode
+                    </div>
+                    <h1 class="text-6xl md:text-[8.5rem] font-black mb-8 leading-[0.8] tracking-tighter uppercase">
+                        ВАШ ЛИЧНЫЙ <br> 
+                        <span class="cyan-text italic">СЕРВЕР</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-white/50 mb-12 max-w-2xl font-light leading-relaxed">
+                        Интернет без ограничений. Скорость до 1 Гбит/с. YouTube в 4K работает мгновенно. Настройка доступа за 1 час.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-6">
+                        <a href="https://t.me/your_username" class="btn-action px-12 py-7 rounded-2xl font-black text-lg uppercase tracking-tighter flex items-center justify-center gap-4 shadow-2xl">
+                            <i data-lucide="zap" class="w-6 h-6"></i>
+                            Подключить сейчас
+                        </a>
+                        <div class="flex items-center gap-6 px-8 py-5 glass-panel rounded-2xl">
+                            <div class="text-[10px] uppercase font-bold text-white/40 tracking-[0.2em] leading-tight">Защита для <br> 10 устройств</div>
+                            <div class="w-px h-10 bg-white/10"></div>
+                            <div class="text-[24px] font-bold cyan-text">100%</div>
                         </div>
-                        <span class="text-[10px] uppercase font-bold text-white/40 tracking-[0.2em] leading-tight">Стабильный <br> доступ 24/7</span>
+                    </div>
+                </div>
+
+                <!-- Дашборд -->
+                <div class="lg:w-2/5 w-full hidden lg:block reveal active" style="transition-delay: 0.3s;">
+                    <div class="glass-panel p-10 rounded-[3rem] relative overflow-hidden group">
+                        <div class="flex justify-between items-center mb-12 relative z-10">
+                            <span class="text-xs font-bold uppercase tracking-widest text-white/30">Node: Frankfurt, DE</span>
+                            <i data-lucide="activity" class="w-5 h-5 cyan-text animate-pulse"></i>
+                        </div>
+                        <div class="space-y-10 relative z-10">
+                            <div>
+                                <div class="flex justify-between text-[10px] mb-4 uppercase font-bold text-white/20">Пропускная способность</div>
+                                <div class="flex items-end gap-2 h-24 mb-6">
+                                    <div class="w-full bg-[#53FBFE]/10 bar-animate rounded-sm" style="--target-height: 35%;"></div>
+                                    <div class="w-full bg-[#53FBFE]/20 bar-animate rounded-sm" style="--target-height: 65%;"></div>
+                                    <div class="w-full bg-[#53FBFE] bar-animate rounded-sm shadow-[0_0_25px_#53FBFE]" style="--target-height: 98%;"></div>
+                                    <div class="w-full bg-[#53FBFE]/40 bar-animate rounded-sm" style="--target-height: 55%;"></div>
+                                    <div class="w-full bg-[#53FBFE]/10 bar-animate rounded-sm" style="--target-height: 40%;"></div>
+                                </div>
+                                <div class="text-5xl font-black text-white italic tracking-tighter">984 <span class="text-xs font-normal cyan-text uppercase tracking-widest">Mbps</span></div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-6 pt-10 border-t border-white/5">
+                                <div class="group/stat">
+                                    <div class="text-[9px] text-white/20 mb-2 font-bold uppercase group-hover/stat:text-cyan-text transition-colors">Пинг</div>
+                                    <div class="text-2xl font-bold italic">14ms</div>
+                                </div>
+                                <div class="group/stat">
+                                    <div class="text-[9px] text-white/20 mb-2 font-bold uppercase group-hover/stat:text-cyan-text transition-colors">Шифрование</div>
+                                    <div class="text-2xl font-bold italic cyan-text">AES-256</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Проблемы -->
-    <section id="problems" class="py-40 relative bg-[#1A1A2E] overflow-hidden">
+    <!-- Блок проблем -->
+    <section id="problems" class="py-40 bg-[#151E30] relative overflow-hidden">
         <div class="container mx-auto px-6 relative z-10">
-            <div class="grid lg:grid-cols-2 gap-20 items-end mb-28">
-                <div>
-                    <div class="text-[#FFB400] text-xs font-bold uppercase tracking-[0.4em] mb-6">Аудит рисков</div>
-                    <h2 class="text-4xl md:text-7xl font-extrabold tracking-tighter uppercase mb-8 leading-none">
-                        Обычные VPN <br> больше <span class="text-[#FFB400] italic">не тянут</span>
-                    </h2>
-                    <p class="text-white/40 text-xl font-light max-w-lg">Массовые сервисы тормозят. Провайдеры видят ваш трафик. Ваши данные продают брокерам за копейки.</p>
-                </div>
-                <div class="text-right hidden lg:block opacity-5">
-                    <i data-lucide="alert-triangle" class="w-64 h-64 text-white inline-block"></i>
-                </div>
+            <div class="text-center mb-32 reveal">
+                <div class="cyan-text text-xs font-bold uppercase tracking-[0.6em] mb-6 italic">Анализ угроз 2026</div>
+                <h2 class="text-4xl md:text-8xl font-black tracking-tighter uppercase mb-8 leading-none">
+                    Обычные VPN <br> <span class="opacity-10">больше не тянут</span>
+                </h2>
+                <p class="text-white/40 text-xl font-light max-w-2xl mx-auto leading-relaxed">Дешевая подписка сегодня — это медленный интернет, постоянные блокировки и риск кражи ваших данных.</p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-10">
-                <div class="glass-panel p-12 rounded-[2.5rem] relative overflow-hidden group">
-                    <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&q=80&w=600')] bg-cover opacity-5 group-hover:opacity-10 transition-opacity"></div>
-                    <i data-lucide="snail" class="w-12 h-12 text-[#FFB400] mb-10 relative z-10"></i>
-                    <h3 class="text-2xl font-bold mb-6 uppercase tracking-tight italic relative z-10 text-[#FFB400]">Видео зависает</h3>
-                    <p class="text-white/50 leading-relaxed text-lg relative z-10">На одном канале сидят тысячи людей. Просмотр в 4K превращается в вечную подгрузку. Скорость падает ровно в тот момент, когда она вам нужна.</p>
+                <!-- Карточка 1 -->
+                <div class="glass-panel p-12 rounded-[3.5rem] group reveal" style="transition-delay: 0.1s;">
+                    <div class="relative overflow-hidden rounded-2xl mb-10 h-52">
+                        <img src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&q=80&w=600" alt="[Медленный интернет]" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#151E30] to-transparent opacity-60"></div>
+                    </div>
+                    <div class="flex items-center gap-4 mb-6">
+                        <i data-lucide="snail" class="w-8 h-8 cyan-text group-hover:rotate-12 transition-transform"></i>
+                        <h3 class="text-2xl font-bold uppercase tracking-tight italic">Видео зависает</h3>
+                    </div>
+                    <p class="text-white/40 leading-relaxed text-lg font-light">На одном канале сидят тысячи человек. YouTube постоянно замирает. Видео в 4K просто не загружается в часы пик.</p>
                 </div>
-                <div class="glass-panel p-12 rounded-[2.5rem] relative overflow-hidden group border-red-500/20">
-                    <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1558494949-ef010cbdcc51?auto=format&fit=crop&q=80&w=600')] bg-cover opacity-5 group-hover:opacity-10 transition-opacity"></div>
-                    <i data-lucide="shield-off" class="w-12 h-12 text-red-500 mb-10 relative z-10"></i>
-                    <h3 class="text-2xl font-bold mb-6 uppercase tracking-tight italic relative z-10 text-red-500">Вас легко вычислить</h3>
-                    <p class="text-white/50 leading-relaxed text-lg relative z-10">Провайдеры знают адреса всех VPN. Они блокируют их за секунды. Вам приходится каждое утро начинать с поиска работающего сервера.</p>
+                <!-- Карточка 2 -->
+                <div class="glass-panel p-12 rounded-[3.5rem] group border-red-500/20 reveal" style="transition-delay: 0.2s;">
+                    <div class="relative overflow-hidden rounded-2xl mb-10 h-52">
+                        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=600" alt="[Блокировки]" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-red-950/40 to-transparent opacity-60"></div>
+                    </div>
+                    <div class="flex items-center gap-4 mb-6">
+                        <i data-lucide="shield-off" class="w-8 h-8 text-red-500 group-hover:scale-110 transition-transform"></i>
+                        <h3 class="text-2xl font-bold uppercase tracking-tight italic text-red-500">Вас блокируют</h3>
+                    </div>
+                    <p class="text-white/40 leading-relaxed text-lg font-light">Провайдеры видят адреса массовых VPN. Они отключают их пачками. Вам приходится искать новый сервер каждое утро.</p>
                 </div>
-                <div class="glass-panel p-12 rounded-[2.5rem] relative overflow-hidden group">
-                    <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=600')] bg-cover opacity-5 group-hover:opacity-10 transition-opacity"></div>
-                    <i data-lucide="eye-off" class="w-12 h-12 text-[#FFB400] mb-10 relative z-10"></i>
-                    <h3 class="text-2xl font-bold mb-6 uppercase tracking-tight italic relative z-10 text-[#FFB400]">Торговля данными</h3>
-                    <p class="text-white/50 leading-relaxed text-lg relative z-10">Дешевые сервисы живут за счет вашей истории посещений. Они знают, что вы ищете и покупаете. Эти данные уходят рекламным сетям.</p>
+                <!-- Карточка 3 -->
+                <div class="glass-panel p-12 rounded-[3.5rem] group reveal" style="transition-delay: 0.3s;">
+                    <div class="relative overflow-hidden rounded-2xl mb-10 h-52">
+                        <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=600" alt="[Слив данных]" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#151E30] to-transparent opacity-60"></div>
+                    </div>
+                    <div class="flex items-center gap-4 mb-6">
+                        <i data-lucide="eye-off" class="w-8 h-8 cyan-text group-hover:rotate-12 transition-transform"></i>
+                        <h3 class="text-2xl font-bold uppercase tracking-tight italic">Слив данных</h3>
+                    </div>
+                    <p class="text-white/40 leading-relaxed text-lg font-light">Дешевые сервисы продают вашу историю браузера. Они знают все ваши интересы. Эти данные уходят рекламным сетям.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Решение -->
-    <section class="py-40 bg-white text-[#1A1A2E] relative overflow-hidden">
+    <!-- Блок решения -->
+    <section class="py-40 bg-white text-[#151E30] relative overflow-hidden">
         <div class="container mx-auto px-6 relative z-10">
             <div class="flex flex-col lg:flex-row gap-24 items-center">
-                <div class="lg:w-1/2 relative">
-                    <div class="absolute -inset-4 bg-[#FFB400]/20 rounded-[50px] blur-xl"></div>
-                    <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&q=80&w=1200" alt="[Изображение серверного оборудования]" class="relative z-10 rounded-[50px] shadow-2xl grayscale hover:grayscale-0 transition-all duration-700">
+                <div class="lg:w-1/2 reveal">
+                    <div class="relative group">
+                        <div class="absolute -inset-4 bg-[#53FBFE]/20 rounded-[4.5rem] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                        <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&q=80&w=1200" alt="[Процесс настройки]" class="relative z-10 rounded-[4rem] shadow-2xl grayscale group-hover:grayscale-0 transition-all duration-1000">
+                    </div>
                 </div>
-                <div class="lg:w-1/2">
-                    <div class="text-[#FFB400] text-xs font-bold uppercase tracking-[0.4em] mb-6">Технология 2026</div>
-                    <h2 class="text-5xl md:text-[6rem] font-extrabold tracking-tighter uppercase mb-12 leading-[0.85]">
-                        Ваш личный <br> <span class="opacity-30 italic">туннель</span>
+                <div class="lg:w-1/2 reveal" style="transition-delay: 0.2s;">
+                    <div class="text-black/30 text-xs font-bold uppercase tracking-[0.4em] mb-8 italic">Технология маскировки</div>
+                    <h2 class="text-5xl md:text-[6.5rem] font-black tracking-tighter uppercase mb-12 leading-[0.85]">
+                        ИНТЕРНЕТ <br> <span class="opacity-10 italic">БЕЗ ГРАНИЦ</span>
                     </h2>
                     <div class="space-y-12">
-                        <div class="flex gap-8">
-                            <div class="text-4xl font-black opacity-10 italic shrink-0">01</div>
-                            <p class="text-xl leading-relaxed text-[#1A1A2E]/80">
-                                <strong class="text-[#1A1A2E]">Провайдер ничего не видит.</strong> <br> 
-                                Протокол Reality превращает трафик в обычный просмотр сайта. Для системы вы просто читаете новости.
+                        <div class="flex gap-8 group">
+                            <div class="text-4xl font-black opacity-10 italic shrink-0 group-hover:opacity-100 group-hover:cyan-text transition-all duration-500">01</div>
+                            <p class="text-xl leading-relaxed">
+                                <strong>Вы невидимы.</strong> <br> 
+                                Протокол Reality маскирует трафик под обычный сайт. Провайдер видит чтение новостей, а не работу туннеля.
                             </p>
                         </div>
-                        <div class="flex gap-8">
-                            <div class="text-4xl font-black opacity-10 italic shrink-0">02</div>
-                            <p class="text-xl leading-relaxed text-[#1A1A2E]/80">
-                                <strong class="text-[#1A1A2E]">Бытовой сценарий.</strong> <br> 
-                                Вы просто включаете телевизор. YouTube и Netflix работают сразу. Скорость такая же, как у вашего обычного интернета.
+                        <div class="flex gap-8 group">
+                            <div class="text-4xl font-black opacity-10 italic shrink-0 group-hover:opacity-100 group-hover:cyan-text transition-all duration-500">02</div>
+                            <p class="text-xl leading-relaxed">
+                                <strong>Бытовой сценарий.</strong> <br> 
+                                Вы просто включаете телевизор. YouTube работает сразу. Netflix запускается в 4K без пауз. Скорость не падает.
                             </p>
                         </div>
-                        <div class="flex gap-8">
-                            <div class="text-4xl font-black opacity-10 italic shrink-0">03</div>
-                            <p class="text-xl leading-relaxed text-[#1A1A2E]/80">
-                                <strong class="text-[#1A1A2E]">Только ваш IP.</strong> <br> 
-                                У сервера нет других владельцев. Ошибки в банках и Google Капча исчезнут навсегда. Доступ для 5-10 устройств.
+                        <div class="flex gap-8 group">
+                            <div class="text-4xl font-black opacity-10 italic shrink-0 group-hover:opacity-100 group-hover:cyan-text transition-all duration-500">03</div>
+                            <p class="text-xl leading-relaxed">
+                                <strong>Ваш личный IP.</strong> <br> 
+                                У сервера только один владелец — вы. Банковские приложения не выдают ошибок. Google не требует капчу.
                             </p>
                         </div>
                     </div>
@@ -180,109 +301,121 @@
     </section>
 
     <!-- Экономика -->
-    <section id="economics" class="py-40 bg-[#1A1A2E] relative overflow-hidden">
-        <div class="absolute inset-0 z-0 opacity-5 pointer-events-none">
-            <img src="https://images.unsplash.com/photo-1551288049-bbbda536339a?auto=format&fit=crop&q=80&w=2000" alt="[Изображение финансовых графиков]" class="w-full h-full object-cover">
-        </div>
-
+    <section id="economics" class="py-40 bg-[#151E30] relative overflow-hidden">
         <div class="container mx-auto px-6 relative z-10">
-            <div class="text-center mb-32">
-                <div class="text-[#FFB400] text-xs font-bold uppercase tracking-[0.5em] mb-6 italic">Сравнение фактов</div>
-                <h2 class="text-5xl md:text-8xl font-extrabold tracking-tighter uppercase italic mb-8 leading-none">Честный расчет</h2>
-                <p class="text-white/40 text-xl font-light max-w-2xl mx-auto">Личный сервер обходится дешевле массовых подписок уже через 4 месяца работы.</p>
+            <div class="text-center mb-32 reveal">
+                <div class="cyan-text text-xs font-bold uppercase tracking-[0.6em] mb-6 italic">Экономика проекта</div>
+                <h2 class="text-4xl md:text-8xl font-black tracking-tighter uppercase mb-8 leading-none italic">Честный расчет</h2>
+                <p class="text-white/40 text-xl font-light max-w-2xl mx-auto">Личный сервер окупается уже через 4 месяца использования.</p>
             </div>
 
             <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-10 items-stretch">
-                <!-- Обычный VPN -->
-                <div class="glass-panel p-12 rounded-[3rem] opacity-40 hover:opacity-100 transition-opacity flex flex-col">
-                    <div class="text-xs font-bold uppercase tracking-widest text-white/30 mb-10 italic">Массовый сегмент</div>
-                    <div class="text-4xl font-bold mb-12">100 – 200 ₽ <span class="text-xs opacity-30 tracking-widest uppercase">/ месяц</span></div>
-                    <ul class="space-y-6 text-sm text-white/50 mb-16 italic flex-grow">
-                        <li class="flex items-start gap-2">— Скорость до 10 Мбит/с</li>
-                        <li class="flex items-start gap-2">— Общий IP на 1000 человек</li>
-                        <li class="flex items-start gap-2">— Сбор вашей истории данных</li>
-                        <li class="flex items-start gap-2">— Постоянный поиск рабочих серверов</li>
+                <!-- Обычный -->
+                <div class="glass-panel p-12 rounded-[3.5rem] opacity-30 hover:opacity-100 transition-all flex flex-col reveal" style="transition-delay: 0.1s;">
+                    <div class="text-xs font-bold uppercase tracking-widest text-white/30 mb-10 italic">Массовый VPN</div>
+                    <div class="text-4xl font-bold mb-10 text-white">150 ₽ <span class="text-xs opacity-30 uppercase tracking-widest">/ месяц</span></div>
+                    <ul class="space-y-6 text-sm text-white/40 mb-16 flex-grow italic">
+                        <li>— Скорость до 10 Мбит/с</li>
+                        <li>— Один IP на тысячи людей</li>
+                        <li>— Сбор и продажа данных</li>
+                        <li>— Постоянные сбои связи</li>
                     </ul>
-                    <div class="text-[10px] uppercase font-bold tracking-[0.4em] text-white/20 text-center">Деньги на ветер</div>
+                    <div class="text-[10px] uppercase font-bold text-white/10 text-center tracking-[0.3em]">Иллюзия доступа</div>
                 </div>
 
                 <!-- Личный VPS -->
-                <div class="premium-border transform md:scale-110 shadow-[0_0_80px_rgba(255,180,0,0.15)] z-10">
-                    <div class="premium-border-inner p-12 flex flex-col h-full relative overflow-hidden">
-                        <div class="absolute -top-10 -right-10 w-40 h-40 bg-[#FFB400]/5 blur-3xl rounded-full"></div>
-                        <div class="text-xs font-bold uppercase tracking-widest text-[#FFB400] mb-10 italic">Ваш Личный Сервер</div>
-                        <div class="text-5xl font-extrabold text-white mb-12 italic">~450 ₽ <span class="text-xs opacity-30 tracking-widest uppercase">/ аренда</span></div>
-                        <ul class="space-y-7 text-base text-white flex-grow mb-16 font-semibold italic">
-                            <li class="flex gap-4"><i data-lucide="zap" class="w-6 h-6 text-[#FFB400]"></i> Скорость до 1 Гбит/с</li>
-                            <li class="flex gap-4"><i data-lucide="check" class="w-6 h-6 text-[#FFB400]"></i> Для 5-10 девайсов всей семьи</li>
-                            <li class="flex gap-4"><i data-lucide="check" class="w-6 h-6 text-[#FFB400]"></i> 4K видео без лагов в 2026-м</li>
-                            <li class="flex gap-4"><i data-lucide="check" class="w-6 h-6 text-[#FFB400]"></i> Никакой рекламы и сбора данных</li>
+                <div class="bg-white p-1 shadow-2xl rounded-[4rem] transform md:scale-110 z-10 reveal shadow-[0_0_50px_rgba(83,251,254,0.15)]" style="transition-delay: 0.2s;">
+                    <div class="bg-[#1B243E] p-12 rounded-[3.9rem] flex flex-col h-full relative overflow-hidden">
+                        <div class="absolute -top-10 -right-10 w-40 h-40 bg-[#53FBFE]/10 blur-3xl rounded-full"></div>
+                        <div class="text-xs font-bold uppercase tracking-widest cyan-text mb-10 italic">Premium Solution</div>
+                        <div class="text-5xl font-black text-white mb-12 italic tracking-tighter">450 ₽ <span class="text-xs opacity-30 uppercase tracking-widest">/ аренда</span></div>
+                        <ul class="space-y-8 text-base text-white flex-grow mb-16 font-bold italic">
+                            <li class="flex gap-4 items-center"><i data-lucide="check-circle" class="w-6 h-6 cyan-text"></i> Скорость 1 Гбит/с</li>
+                            <li class="flex gap-4 items-center"><i data-lucide="check-circle" class="w-6 h-6 cyan-text"></i> Для 10 устройств</li>
+                            <li class="flex gap-4 items-center"><i data-lucide="check-circle" class="w-6 h-6 cyan-text"></i> 4K видео без лагов</li>
+                            <li class="flex gap-4 items-center"><i data-lucide="check-circle" class="w-6 h-6 cyan-text"></i> Полная приватность</li>
                         </ul>
-                        <a href="https://t.me/your_username" class="btn-gold py-6 rounded-2xl text-center font-black uppercase tracking-widest text-lg shadow-xl">Подключить</a>
+                        <a href="https://t.me/your_username" class="btn-action py-7 rounded-2xl text-center font-black uppercase tracking-widest text-lg shadow-xl relative z-10">Занять сервер</a>
                     </div>
                 </div>
 
-                <!-- Брендовый VPN -->
-                <div class="glass-panel p-12 rounded-[3rem] opacity-40 hover:opacity-100 transition-opacity flex flex-col">
-                    <div class="text-xs font-bold uppercase tracking-widest text-white/30 mb-10 italic">Западные Бренды</div>
-                    <div class="text-4xl font-bold mb-12">1500+ ₽ <span class="text-xs opacity-30 tracking-widest uppercase">/ месяц</span></div>
-                    <ul class="space-y-6 text-sm text-white/50 mb-16 italic flex-grow">
-                        <li class="flex items-start gap-2">— Высокая цена за бренд</li>
-                        <li class="flex items-start gap-2">— Проблемы с оплатой из РФ</li>
-                        <li class="flex items-start gap-2">— Все еще массовые IP-адреса</li>
-                        <li class="flex items-start gap-2">— Риск блокировки всей сети</li>
+                <!-- Брендовый -->
+                <div class="glass-panel p-12 rounded-[3.5rem] opacity-30 hover:opacity-100 transition-all flex flex-col reveal" style="transition-delay: 0.3s;">
+                    <div class="text-xs font-bold uppercase tracking-widest text-white/30 mb-10 italic">Массовый Premium</div>
+                    <div class="text-4xl font-bold mb-10 text-white">1500+ ₽ <span class="text-xs opacity-30 uppercase tracking-widest">/ месяц</span></div>
+                    <ul class="space-y-6 text-sm text-white/40 mb-16 flex-grow italic">
+                        <li>— Огромная наценка за бренд</li>
+                        <li>— Проблемы с оплатой картой</li>
+                        <li>— Блокировки всей сети</li>
+                        <li>— Ограничение числа сессий</li>
                     </ul>
-                    <div class="text-[10px] uppercase font-bold tracking-[0.4em] text-white/20 text-center">Переплата за маркетинг</div>
+                    <div class="text-[10px] uppercase font-bold text-white/10 text-center tracking-[0.3em]">Переплата за имя</div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Финал -->
-    <section id="cta" class="py-48 relative overflow-hidden text-center bg-[#FFB400] text-[#1A1A2E]">
-        <!-- Фоновое изображение CTA -->
-        <div class="absolute inset-0 z-0 opacity-10 grayscale pointer-events-none">
-            <img src="https://images.unsplash.com/photo-1510511459019-5dee99c48597?auto=format&fit=crop&q=80&w=2000" alt="[Изображение кода и безопасности]" class="w-full h-full object-cover">
+    <section id="cta" class="py-48 relative overflow-hidden text-center bg-[#53FBFE] text-[#151E30]">
+        <div class="absolute inset-0 z-0 opacity-10 grayscale pointer-events-none scale-105">
+            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=2000" alt="[Финал]" class="w-full h-full object-cover">
         </div>
 
-        <div class="container mx-auto px-6 relative z-10">
-            <h2 class="text-6xl md:text-[10rem] font-black mb-16 tracking-tighter uppercase leading-[0.8] italic">
-                ИНТЕРНЕТ <br> <span class="opacity-30">РАБОТАЕТ</span>
+        <div class="container mx-auto px-6 relative z-10 reveal">
+            <h2 class="text-6xl md:text-[11rem] font-black mb-16 tracking-tighter uppercase leading-[0.8] italic">
+                ИНТЕРНЕТ <br> <span class="opacity-20">РАБОТАЕТ</span>
             </h2>
-            <p class="text-2xl md:text-4xl mb-20 max-w-3xl mx-auto font-light leading-snug text-[#1A1A2E]/80">
-                Не нужно быть программистом. Я настрою сервер за вас. Пришлю короткую ссылку. YouTube заработает сразу на всех устройствах.
+            <p class="text-2xl md:text-4xl mb-20 max-w-4xl mx-auto font-light leading-snug">
+                Не нужно быть программистом. Я настрою всё за вас. Пришлю ссылку для входа. YouTube заработает сразу на всех ваших устройствах.
             </p>
-            <a href="https://t.me/your_username" class="bg-[#1A1A2E] text-[#FFB400] hover:bg-black font-black py-10 px-20 rounded-[40px] transition-all text-3xl shadow-3xl inline-flex items-center gap-8 uppercase tracking-tighter italic">
+            <a href="https://t.me/your_username" class="bg-[#151E30] text-[#53FBFE] hover:bg-black font-black py-10 px-24 rounded-[40px] transition-all text-3xl shadow-2xl inline-flex items-center gap-8 uppercase tracking-tighter italic">
                 <i data-lucide="message-circle" class="w-12 h-12"></i>
                 Написать в Telegram
             </a>
-            <div class="mt-24 flex flex-wrap justify-center gap-12 text-[11px] font-black uppercase tracking-[0.5em] opacity-40 italic">
-                <span class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4"></i> Frankfurt Node</span>
-                <span class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4"></i> Stealth Reality</span>
-                <span class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4"></i> Latency < 18ms</span>
+            <div class="mt-24 flex flex-wrap justify-center gap-16 text-[11px] font-black uppercase tracking-[0.5em] opacity-40 italic">
+                <span class="flex items-center gap-2"><i data-lucide="globe" class="w-4 h-4"></i> Frankfurt Node</span>
+                <span class="flex items-center gap-2"><i data-lucide="eye" class="w-4 h-4"></i> Stealth Reality</span>
+                <span class="flex items-center gap-2"><i data-lucide="zap" class="w-4 h-4"></i> Latency < 18ms</span>
             </div>
         </div>
     </section>
 
     <!-- Футер -->
-    <footer class="py-24 border-t border-white/5 bg-[#1A1A2E]">
-        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-14">
-            <div class="text-3xl font-black text-white italic opacity-20 uppercase tracking-tighter flex items-center gap-3">
-                <i data-lucide="shield" class="w-8 h-8"></i>
+    <footer class="py-24 border-t border-white/5 bg-[#151E30]">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-16">
+            <div class="text-4xl font-extrabold text-white italic opacity-20 uppercase tracking-tighter flex items-center gap-4 hover:opacity-100 transition-opacity cursor-default">
+                <i data-lucide="shield-check" class="w-10 h-10 cyan-text"></i>
                 PrivateTunnel
             </div>
-            <div class="text-white/20 text-xs text-center md:text-right font-medium tracking-[0.3em] uppercase leading-relaxed">
+            <div class="text-white/20 text-sm text-center md:text-right font-medium tracking-[0.3em] uppercase leading-relaxed">
                 <p>© 2026 Личный VPS Сервис. Настройка и поддержка 24/7.</p>
                 <div class="mt-6 flex gap-10 justify-center md:justify-end">
-                    <a href="#" class="hover:text-[#FFB400] transition-colors">Безопасность данных</a>
-                    <a href="#" class="hover:text-[#FFB400] transition-colors">Гарантия аптайма</a>
+                    <a href="#" class="hover:text-[#53FBFE] transition-colors">Безопасность</a>
+                    <a href="#" class="hover:text-[#53FBFE] transition-colors">Статус узлов</a>
                 </div>
             </div>
         </div>
     </footer>
 
     <script>
+        // Инициализация иконок
         lucide.createIcons();
+
+        // Reveal Animation on Scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     </script>
 </body>
 </html>
