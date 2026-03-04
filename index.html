@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrivateTunnel 2026 — Личный VPS сервер</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            background-color: #020617;
+        }
+        .hero-section {
+            background: radial-gradient(circle at 20% 30%, rgba(30, 64, 175, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(79, 70, 229, 0.1) 0%, transparent 50%);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+        }
+        .premium-border {
+            position: relative;
+            background: linear-gradient(to bottom right, #3b82f6, #8b5cf6, #d946ef);
+            padding: 1px;
+            border-radius: 2rem;
+        }
+        .premium-border-inner {
+            background: #020617;
+            border-radius: calc(2rem - 1px);
+        }
+        .text-glow {
+            text-shadow: 0 0 30px rgba(59, 130, 246, 0.4);
+        }
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+        .scan-line {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+            position: absolute;
+            animation: scan 4s linear infinite;
+        }
+        @keyframes scan {
+            0% { top: 0%; opacity: 0; }
+            50% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+    </style>
+</head>
+<body class="text-slate-200 antialiased">
+
+    <!-- Навигация -->
+    <nav class="fixed top-0 w-full z-50 bg-slate-950/40 backdrop-blur-2xl border-b border-white/5">
+        <div class="container mx-auto px-6 py-5 flex justify-between items-center">
+            <div class="text-2xl font-black text-white flex items-center gap-3 tracking-tighter uppercase">
+                <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/40">
+                    <i data-lucide="shield-check" class="w-6 h-6 text-white"></i>
+                </div>
+                PrivateTunnel <span class="text-blue-500">2026</span>
+            </div>
+            <div class="hidden lg:flex gap-10 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-500">
+                <a href="#problems" class="hover:text-blue-400 transition-colors">Анализ рисков</a>
+                <a href="#economics" class="hover:text-blue-400 transition-colors">Стоимость</a>
+                <a href="#cta" class="hover:text-blue-400 transition-colors">Контакты</a>
+            </div>
+            <a href="https://t.me/your_username" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-8 rounded-xl transition-all text-sm shadow-lg shadow-blue-600/20">
+                Получить доступ
+            </a>
+        </div>
+    </nav>
+
+    <!-- Главный блок -->
+    <section class="relative min-h-screen flex items-center pt-24 hero-section overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2000" 
+                 alt="[Изображение технологичного фона]" 
+                 class="w-full h-full object-cover opacity-10">
+            <div class="absolute inset-0 bg-gradient-to-b from-slate-950 via-transparent to-slate-950"></div>
+        </div>
+
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="flex flex-col lg:flex-row items-center gap-20">
+                <!-- Контентная часть -->
+                <div class="lg:w-3/5 text-left">
+                    <div class="inline-flex items-center gap-3 px-4 py-2 rounded-xl bg-blue-500/5 border border-blue-500/20 text-blue-400 text-[10px] font-black uppercase tracking-[0.3em] mb-10">
+                        <span class="flex h-2 w-2 rounded-full bg-blue-500 animate-pulse"></span>
+                        Статус: Протокол Reality Активен 2026
+                    </div>
+                    <h1 class="text-6xl md:text-9xl font-black text-white mb-8 leading-[0.85] tracking-tighter uppercase">
+                        ТВОЙ ЛИЧНЫЙ <br> 
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-indigo-400 to-purple-400 text-glow">DIGITAL-АКТИВ</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-slate-400 mb-12 max-w-2xl leading-relaxed font-light">
+                        В 2026-м массовые VPN — это риск блокировки и потери данных. Получи персональный сервер со скоростью до 1 Гбит/с и полной невидимостью для систем мониторинга.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-6">
+                        <a href="https://t.me/your_username" class="group relative bg-white text-slate-950 hover:bg-blue-600 hover:text-white font-black py-6 px-12 rounded-2xl transition-all shadow-2xl shadow-white/5 flex items-center justify-center gap-3 overflow-hidden text-xl">
+                            <span class="relative z-10 flex items-center gap-3">
+                                <i data-lucide="zap" class="w-6 h-6"></i>
+                                Подключить сейчас
+                            </span>
+                        </a>
+                        <div class="flex items-center gap-5 px-8 py-5 rounded-2xl glass-card border-white/10">
+                            <div class="flex -space-x-4">
+                                <div class="w-12 h-12 rounded-full border-2 border-slate-950 bg-slate-900 flex items-center justify-center text-[10px] font-bold">4K</div>
+                                <div class="w-12 h-12 rounded-full border-2 border-slate-950 bg-slate-900 flex items-center justify-center text-[10px] font-bold">U+</div>
+                                <div class="w-12 h-12 rounded-full border-2 border-slate-950 bg-slate-900 flex items-center justify-center text-[10px] font-bold">AI</div>
+                            </div>
+                            <span class="text-xs text-slate-500 font-bold uppercase tracking-widest leading-tight text-left">Ультра-скорость <br> и стабильность</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Визуальный дашборд -->
+                <div class="lg:w-2/5 w-full hidden lg:block">
+                    <div class="floating relative p-1 bg-gradient-to-br from-blue-500/30 to-purple-500/30 rounded-[3rem]">
+                        <div class="glass-card p-8 rounded-[2.9rem] relative z-10 overflow-hidden">
+                            <div class="scan-line"></div>
+                            <div class="flex items-center justify-between mb-10">
+                                <div class="text-[10px] text-blue-400 font-mono tracking-[0.2em]">ШИФРОВАНИЕ: AES-256-GCM</div>
+                                <div class="flex gap-2">
+                                    <div class="w-2 h-2 rounded-full bg-blue-500"></div>
+                                    <div class="w-2 h-2 rounded-full bg-blue-500/30"></div>
+                                </div>
+                            </div>
+                            <div class="space-y-8">
+                                <div class="p-5 rounded-2xl bg-white/5 border border-white/5">
+                                    <div class="flex justify-between text-[10px] mb-3 text-slate-500 font-bold uppercase tracking-widest">Тест скорости (Глобальный)</div>
+                                    <div class="flex items-end gap-1 h-12">
+                                        <div class="w-full bg-blue-500/20 h-[30%] rounded-t-sm"></div>
+                                        <div class="w-full bg-blue-500/40 h-[60%] rounded-t-sm"></div>
+                                        <div class="w-full bg-blue-500 h-[95%] rounded-t-sm shadow-[0_0_15px_#3b82f6]"></div>
+                                        <div class="w-full bg-blue-500/50 h-[45%] rounded-t-sm"></div>
+                                    </div>
+                                    <div class="mt-4 text-2xl font-black text-white">984 <span class="text-xs font-normal text-slate-500 uppercase tracking-widest">Мбит/с</span></div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-5">
+                                    <div class="p-5 rounded-2xl bg-white/5 border border-white/5">
+                                        <div class="text-[10px] text-slate-500 mb-2 font-bold uppercase tracking-widest">Пинг</div>
+                                        <div class="text-2xl font-black text-blue-400">18мс</div>
+                                    </div>
+                                    <div class="p-5 rounded-2xl bg-white/5 border border-white/5">
+                                        <div class="text-[10px] text-slate-500 mb-2 font-bold uppercase tracking-widest">Защита</div>
+                                        <div class="text-2xl font-black text-emerald-400 text-glow">МАКС</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="absolute -inset-10 bg-blue-600/10 blur-[100px] rounded-full z-0"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Блок проблем -->
+    <section id="problems" class="py-32 relative bg-slate-950/80 overflow-hidden">
+        <!-- Фоновое изображение для блока -->
+        <div class="absolute right-0 top-0 w-1/3 h-full opacity-5 pointer-events-none">
+            <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=1000" alt="[Графика кибербезопасности]">
+        </div>
+        
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-24">
+                <div class="text-red-500 font-black text-xs uppercase tracking-[0.4em] mb-4">Аудит угроз 2026</div>
+                <h2 class="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter uppercase leading-none">Почему VPN за 100₽ — это ловушка?</h2>
+                <p class="text-slate-500 text-xl max-w-2xl mx-auto font-light leading-relaxed">В современных реалиях дешевая подписка приносит больше проблем, чем пользы.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <div class="glass-card p-12 rounded-[3rem] group hover:bg-white/5 transition-all duration-500 border-white/5 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&q=80&w=600" alt="[Имитация медленного интернета]" class="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-10 transition-opacity">
+                    <div class="w-16 h-16 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-2xl flex items-center justify-center mb-10 text-orange-400 group-hover:scale-110 transition-transform relative z-10">
+                        <i data-lucide="snail" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-2xl font-black mb-6 text-white uppercase tracking-tight relative z-10">Очередь за каналом</h3>
+                    <p class="text-slate-400 leading-relaxed text-lg font-light relative z-10">Вы делите сервер с сотнями пользователей. Вечерний просмотр YouTube превращается в вечную загрузку и потерю нервов.</p>
+                </div>
+                
+                <div class="glass-card p-12 rounded-[3rem] group hover:bg-white/5 transition-all duration-500 border-white/5 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc51?auto=format&fit=crop&q=80&w=600" alt="[Утечка данных]" class="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-10 transition-opacity">
+                    <div class="w-16 h-16 bg-gradient-to-br from-red-600/20 to-purple-600/20 rounded-2xl flex items-center justify-center mb-10 text-red-500 group-hover:scale-110 transition-transform relative z-10">
+                        <i data-lucide="eye-off" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-2xl font-black mb-6 text-white uppercase tracking-tight relative z-10">Торговля данными</h3>
+                    <p class="text-slate-400 leading-relaxed text-lg font-light relative z-10">Бесплатный или дешевый сервис зарабатывает на продаже вашей истории браузера маркетинговым гигантам.</p>
+                </div>
+
+                <div class="glass-card p-12 rounded-[3rem] group hover:bg-white/5 transition-all duration-500 border-white/5 relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=600" alt="[Блокировка серверов]" class="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-10 transition-opacity">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-500/20 to-indigo-500/20 rounded-2xl flex items-center justify-center mb-10 text-blue-400 group-hover:scale-110 transition-transform relative z-10">
+                        <i data-lucide="alert-octagon" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-2xl font-black mb-6 text-white uppercase tracking-tight relative z-10">Массовые баны</h3>
+                    <p class="text-slate-400 leading-relaxed text-lg font-light relative z-10">Адреса популярных VPN блокируются нейросетями провайдеров за считанные минуты. Личный IP — единственный способ защиты.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Технологический баннер -->
+    <section class="py-24 relative overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-700">
+        <div class="absolute inset-0 opacity-20">
+            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=2000" alt="[Микросхема]" class="w-full h-full object-cover">
+        </div>
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="flex flex-col lg:flex-row justify-between items-center gap-10">
+                <div class="text-left max-w-3xl">
+                    <h2 class="text-4xl md:text-5xl font-black text-white mb-6 uppercase tracking-tight">Забудьте слово «Блокировка»</h2>
+                    <p class="text-blue-100 text-xl font-light">Протокол Reality делает ваш трафик неотличимым от обычного интернет-серфинга. Провайдер видит лишь стандартное соединение, а вы — весь мир.</p>
+                </div>
+                <div class="flex items-center gap-10">
+                    <div class="text-center">
+                        <div class="text-5xl font-black text-white mb-2">100%</div>
+                        <div class="text-[10px] text-blue-200 uppercase font-black tracking-widest">Аптайм</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-5xl font-black text-white mb-2">0</div>
+                        <div class="text-[10px] text-blue-200 uppercase font-black tracking-widest">Логов</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секция экономики -->
+    <section id="economics" class="py-32 bg-slate-950 relative overflow-hidden">
+        <div class="absolute left-0 bottom-0 w-full h-1/2 opacity-5 pointer-events-none">
+            <img src="https://images.unsplash.com/photo-1551288049-bbbda536339a?auto=format&fit=crop&q=80&w=2000" alt="[Графики роста]">
+        </div>
+
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-24">
+                <div class="text-blue-500 font-black text-xs uppercase tracking-[0.4em] mb-4">Анализ рынка 2026</div>
+                <h2 class="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter uppercase leading-none">Выгода в цифрах</h2>
+                <p class="text-slate-500 text-xl max-w-2xl mx-auto font-light leading-relaxed">Инвестируйте в качество, а не в имитацию работающего интернета.</p>
+            </div>
+            
+            <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+                <!-- Дешевый вариант -->
+                <div class="glass-card p-12 rounded-[3.5rem] flex flex-col border-white/5 opacity-60 hover:opacity-100 transition-opacity">
+                    <div class="mb-8 text-slate-500 text-[10px] font-black uppercase tracking-[0.3em]">Масс-маркет VPN</div>
+                    <div class="text-4xl font-black text-white mb-10 leading-none">100 – 200 ₽ <span class="text-xs font-normal text-slate-500">/ месяц</span></div>
+                    <div class="space-y-6 flex-grow mb-16">
+                        <div class="flex gap-4 text-slate-500 text-sm italic font-medium">
+                            <i data-lucide="minus-circle" class="w-5 h-5 shrink-0 text-red-900"></i> Скорость 10-15 Мбит/с
+                        </div>
+                        <div class="flex gap-4 text-slate-500 text-sm italic font-medium">
+                            <i data-lucide="minus-circle" class="w-5 h-5 shrink-0 text-red-900"></i> Общий IP с ботами
+                        </div>
+                        <div class="flex gap-4 text-slate-500 text-sm italic font-medium">
+                            <i data-lucide="minus-circle" class="w-5 h-5 shrink-0 text-red-900"></i> Риск кражи паролей
+                        </div>
+                    </div>
+                    <div class="pt-8 border-t border-white/5 text-slate-600 text-[10px] text-center font-black uppercase tracking-widest">Низкая надежность</div>
+                </div>
+
+                <!-- Ваш Личный VPS -->
+                <div class="premium-border transform lg:scale-110 shadow-[0_0_100px_rgba(59,130,246,0.15)] z-10">
+                    <div class="premium-border-inner p-12 flex flex-col h-full relative overflow-hidden">
+                        <div class="absolute -top-10 -right-10 w-40 h-40 bg-blue-600/10 blur-[50px] rounded-full"></div>
+                        <div class="mb-8 text-blue-500 text-[10px] font-black uppercase tracking-[0.3em]">Ваш Личный VPS</div>
+                        <div class="text-4xl font-black text-white mb-10 leading-none">~450 ₽ <span class="text-xs font-normal text-slate-500">/ мес (аренда)</span></div>
+                        <div class="space-y-6 flex-grow mb-16">
+                            <div class="flex gap-4 text-slate-200 text-base font-bold">
+                                <i data-lucide="zap" class="w-6 h-6 shrink-0 text-blue-500"></i> Скорость 1000 Мбит/с
+                            </div>
+                            <div class="flex gap-4 text-slate-200 text-base font-bold">
+                                <i data-lucide="shield" class="w-6 h-6 shrink-0 text-blue-500"></i> Приватный чистый IP
+                            </div>
+                            <div class="flex gap-4 text-slate-200 text-base font-bold">
+                                <i data-lucide="tv" class="w-6 h-6 shrink-0 text-blue-500"></i> Идеально для Smart TV
+                            </div>
+                            <div class="flex gap-4 text-slate-200 text-base font-bold">
+                                <i data-lucide="users" class="w-6 h-6 shrink-0 text-blue-500"></i> Для всей семьи
+                            </div>
+                        </div>
+                        <a href="https://t.me/your_username" class="bg-blue-600 hover:bg-blue-500 text-white font-black py-5 px-8 rounded-2xl text-center transition-all shadow-xl shadow-blue-600/40 uppercase tracking-widest text-sm">
+                            Занять сервер
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Премиум подписки -->
+                <div class="glass-card p-12 rounded-[3.5rem] flex flex-col border-white/5 opacity-60 hover:opacity-100 transition-opacity">
+                    <div class="mb-8 text-slate-500 text-[10px] font-black uppercase tracking-[0.3em]">Массовый Premium</div>
+                    <div class="text-4xl font-black text-white mb-10 leading-none">1600+ ₽ <span class="text-xs font-normal text-slate-500">/ месяц</span></div>
+                    <div class="space-y-6 flex-grow mb-16 text-slate-500 text-sm font-medium">
+                        <div class="flex gap-4">
+                            <i data-lucide="minus-circle" class="w-5 h-5 shrink-0"></i> Переплата за рекламу
+                        </div>
+                        <div class="flex gap-4">
+                            <i data-lucide="minus-circle" class="w-5 h-5 shrink-0"></i> Риск массового бана
+                        </div>
+                        <div class="flex gap-4">
+                            <i data-lucide="minus-circle" class="w-5 h-5 shrink-0"></i> Нет выделенного IP
+                        </div>
+                    </div>
+                    <div class="pt-8 border-t border-white/5 text-slate-600 text-[10px] text-center font-black uppercase tracking-widest">Переплата брендам</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Финальный призыв -->
+    <section id="cta" class="py-32 relative overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=2000" 
+                 alt="[Защищенный сервер]" 
+                 class="w-full h-full object-cover opacity-10">
+        </div>
+        
+        <div class="container mx-auto px-6 relative z-10 text-center">
+            <div class="max-w-5xl mx-auto p-20 rounded-[4rem] glass-card border-white/10 overflow-hidden relative">
+                <div class="absolute -top-40 -left-40 w-96 h-96 bg-blue-600/10 blur-[120px] rounded-full"></div>
+                <div class="absolute -bottom-40 -right-40 w-96 h-96 bg-purple-600/10 blur-[120px] rounded-full"></div>
+                
+                <h2 class="text-5xl md:text-7xl font-black text-white mb-10 tracking-tighter uppercase leading-[0.9]">
+                    ТВОЙ ИНТЕРНЕТ <br> <span class="text-blue-500">БОЛЬШЕ НЕ ТУПИТ</span>
+                </h2>
+                <p class="text-2xl text-slate-400 mb-16 max-w-3xl mx-auto leading-relaxed font-light">
+                    Я за 60 минут настрою твой персональный сервер и пришлю ключи доступа. Всё, что тебе нужно — это нажать одну кнопку в приложении.
+                </p>
+                
+                <div class="flex flex-col items-center gap-10">
+                    <a href="https://t.me/your_username" class="group relative bg-white text-slate-950 hover:bg-blue-600 hover:text-white font-black py-8 px-16 rounded-[2rem] transition-all text-3xl shadow-2xl shadow-white/5 flex items-center gap-5 overflow-hidden">
+                        <i data-lucide="send" class="w-8 h-8 group-hover:translate-x-2 group-hover:-translate-y-2 transition-transform"></i>
+                        Написать мастеру
+                    </a>
+                    <div class="flex flex-wrap justify-center gap-10 text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">
+                        <span class="flex items-center gap-2"><i data-lucide="shield-check" class="w-4 h-4 text-blue-500"></i> Без логов</span>
+                        <span class="flex items-center gap-2"><i data-lucide="zap" class="w-4 h-4 text-blue-500"></i> 4K Стриминг</span>
+                        <span class="flex items-center gap-2"><i data-lucide="cpu" class="w-4 h-4 text-blue-500"></i> Reality V2</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer class="py-20 border-t border-white/5 bg-slate-950">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-10">
+            <div class="text-3xl font-black text-white flex items-center gap-3 tracking-tighter uppercase opacity-30">
+                <div class="w-8 h-8 bg-blue-600/30 rounded flex items-center justify-center">
+                    <i data-lucide="shield-check" class="w-5 h-5 text-blue-500"></i>
+                </div>
+                PrivateTunnel
+            </div>
+            <div class="text-slate-600 text-sm text-center md:text-right font-medium">
+                <p>© 2026 Личный VPS Сервис. Для тех, кто ценит цифровую свободу.</p>
+                <div class="mt-4 flex justify-center md:justify-end gap-6 text-[10px] uppercase tracking-widest opacity-50">
+                    <a href="#" class="hover:text-white">Приватность</a>
+                    <a href="#" class="hover:text-white">Условия</a>
+                    <a href="#" class="hover:text-white">Технологии</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
