@@ -51,6 +51,7 @@
             object-fit: cover;
             opacity: 0.4;
             filter: saturate(1.2) contrast(1.1) brightness(0.8);
+            will-change: src;
         }
 
         .overlay {
@@ -564,31 +565,36 @@
                 <a href="#">Telegram</a>
                 <a href="#">Поддержка</a>
             </div>
-            <p>© 2026 Hysteria 2 Personal Setup. Premium Security Solutions.</p>
+            <p>© 2024 Hysteria 2 Personal Setup. Premium Security Solutions.</p>
         </footer>
     </div>
 
     <script>
-        // Анимация фона (80 кадров)
+        // Элементы
         const frameElement = document.getElementById('bg-frame');
         const totalFrames = 80;
-        let currentFrame = 0;
-        
-        // Массив для предзагрузки, чтобы не было мерцания
-        const images = [];
+        let lastFrame = -1;
 
-        function updateFrame() {
+        /**
+         * Обновление кадра в зависимости от прокрутки
+         */
+        function handleScrollAnimation() {
             if (!frameElement) return;
-            
-            currentFrame = (currentFrame + 1) % totalFrames;
-            const frameIndex = String(currentFrame).padStart(2, '0');
-            
-            // Используем относительный путь без ведущего слеша, так как папка рядом с файлом
-            frameElement.src = `frames/frame_${frameIndex}_delay-0.1s.webp`;
-            
-            setTimeout(() => {
-                requestAnimationFrame(updateFrame);
-            }, 100);
+
+            // Расчет прогресса прокрутки (0..1)
+            const scrollY = window.scrollY;
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollFraction = Math.max(0, Math.min(1, scrollY / maxScroll));
+
+            // Расчет индекса кадра
+            const frameIndex = Math.floor(scrollFraction * (totalFrames - 1));
+
+            // Обновляем только если кадр изменился для экономии ресурсов
+            if (frameIndex !== lastFrame) {
+                const formattedIndex = String(frameIndex).padStart(2, '0');
+                frameElement.src = `frames/frame_${formattedIndex}_delay-0.1s.webp`;
+                lastFrame = frameIndex;
+            }
         }
 
         // FAQ Accordion Logic
@@ -607,7 +613,7 @@
             });
         });
 
-        // Плавная прокрутка
+        // Плавная прокрутка для якорных ссылок
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -618,19 +624,20 @@
             });
         });
 
-        // Запуск анимации гарантированным способом
+        // Предзагрузка первого кадра и запуск слушателя
+        window.addEventListener('scroll', () => {
+            requestAnimationFrame(handleScrollAnimation);
+        }, { passive: true });
+
         document.addEventListener('DOMContentLoaded', () => {
-            // Предзагружаем первый кадр сразу
-            const img = new Image();
-            img.src = `frames/frame_00_delay-0.1s.webp`;
-            img.onload = () => {
-                requestAnimationFrame(updateFrame);
-            };
+            // Инициализация первого кадра при загрузке
+            handleScrollAnimation();
             
-            // Если через 2 секунды не стартануло (например, файл не найден), пробуем форсировать
-            setTimeout(() => {
-                if(currentFrame === 0) requestAnimationFrame(updateFrame);
-            }, 2000);
+            // Опционально: предзагрузка всех кадров в фоне для плавности (по желанию браузера)
+            for (let i = 0; i < totalFrames; i++) {
+                const img = new Image();
+                img.src = `frames/frame_${String(i).padStart(2, '0')}_delay-0.1s.webp`;
+            }
         });
     </script>
 </body>
