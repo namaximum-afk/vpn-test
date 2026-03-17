@@ -10,14 +10,14 @@
     <style>
         :root {
             --bg-color: #030303;
-            --glass-bg: rgba(0, 0, 0, 0.5); /* Матовое стекло */
-            --glass-border: rgba(255, 255, 255, 0.12);
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
             --accent-cyan: #00f2ff;
-            --accent-glow: rgba(0, 242, 255, 0.8);
+            --accent-glow: rgba(0, 242, 255, 0.4);
             --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.8);
-            --transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            --glass-blur: blur(40px);
+            --text-secondary: rgba(255, 255, 255, 0.65);
+            --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            --glass-blur: blur(25px);
         }
 
         * {
@@ -27,7 +27,7 @@
         }
 
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-primary);
             line-height: 1.6;
@@ -52,19 +52,19 @@
         }
 
         #loader-text {
-            font-size: 14px;
-            letter-spacing: 4px;
+            font-size: 12px;
+            letter-spacing: 5px;
             margin-bottom: 20px;
             color: var(--accent-cyan);
-            text-shadow: 0 0 10px var(--accent-cyan);
             text-transform: uppercase;
         }
 
         #loader-bar-bg {
-            width: 200px;
+            width: 240px;
             height: 2px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
             position: relative;
+            border-radius: 2px;
         }
 
         #loader-bar-fill {
@@ -80,11 +80,12 @@
 
         #loader-percent {
             margin-top: 15px;
-            font-size: 32px;
-            font-weight: 700;
+            font-size: 28px;
+            font-weight: 300;
+            letter-spacing: -1px;
         }
 
-        /* Анимированный фон */
+        /* Анимированный фон с размытием */
         #bg-canvas-container {
             position: fixed;
             top: 0;
@@ -99,8 +100,9 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 1;
-            filter: saturate(1.2) contrast(1.1);
+            opacity: 0.5;
+            filter: blur(10px) saturate(1.1) contrast(1.1) brightness(0.6);
+            will-change: src;
         }
 
         .overlay {
@@ -109,52 +111,18 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at center, transparent 0%, rgba(3, 3, 3, 0.2) 100%);
+            background: radial-gradient(circle at center, transparent 0%, var(--bg-color) 100%);
         }
 
-        /* Эффект свечения для текста (Neon Glow) */
-        .neon-title {
-            text-shadow: 
-                0 0 7px #fff,
-                0 0 10px #fff,
-                0 0 21px #fff,
-                0 0 42px var(--accent-cyan),
-                0 0 82px var(--accent-cyan),
-                0 0 92px var(--accent-cyan);
-        }
-
-        .accent {
-            color: var(--accent-cyan);
-            text-shadow: 
-                0 0 10px var(--accent-cyan),
-                0 0 20px var(--accent-cyan),
-                0 0 40px var(--accent-cyan);
-        }
-
-        /* Стеклянный контейнер блока */
-        .glass-panel {
-            max-width: 1200px;
-            margin: 60px auto;
-            padding: 80px 60px;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 48px;
-            backdrop-filter: var(--glass-blur);
-            box-shadow: 0 0 50px -10px rgba(0, 242, 255, 0.15); /* Внешнее свечение блока */
-            position: relative;
-            transition: var(--transition);
-        }
-
-        .glass-panel:hover {
-            box-shadow: 0 0 60px -5px rgba(0, 242, 255, 0.25);
-            border-color: rgba(0, 242, 255, 0.3);
-        }
-
-        /* Layout */
-        header {
-            max-width: 1200px;
+        .container {
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 40px 24px;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        header {
+            padding: 40px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -162,7 +130,7 @@
 
         .logo {
             font-weight: 700;
-            font-size: 22px;
+            font-size: 20px;
             letter-spacing: 2px;
             display: flex;
             align-items: center;
@@ -171,144 +139,182 @@
         }
 
         .logo-dot {
-            width: 12px;
-            height: 12px;
+            width: 8px;
+            height: 8px;
             background: var(--accent-cyan);
-            border-radius: 3px;
+            border-radius: 50%;
             box-shadow: 0 0 15px var(--accent-cyan);
-            transform: rotate(45deg);
         }
 
-        /* Hero */
+        /* Hero Section */
         .hero {
+            padding: 100px 0 140px;
             text-align: center;
         }
 
         h1 {
-            font-size: clamp(40px, 8vw, 72px);
+            font-size: clamp(40px, 8vw, 64px);
             font-weight: 700;
-            line-height: 1.1;
-            margin-bottom: 32px;
+            line-height: 1.15;
+            margin-bottom: 28px;
             letter-spacing: -0.03em;
         }
 
+        .accent {
+            color: var(--accent-cyan);
+        }
+
         .hero p {
-            font-size: 20px;
+            font-size: 18px;
             color: var(--text-secondary);
-            max-width: 750px;
-            margin: 0 auto 54px;
-            font-weight: 400;
+            max-width: 650px;
+            margin: 0 auto 48px;
+            font-weight: 300;
         }
 
         .hero-chips {
             display: flex;
             justify-content: center;
-            gap: 16px;
+            gap: 12px;
             flex-wrap: wrap;
-            margin-bottom: 60px;
+            margin-bottom: 54px;
         }
 
         .chip {
-            padding: 14px 28px;
-            background: rgba(255, 255, 255, 0.05);
+            padding: 10px 20px;
+            background: var(--glass-bg);
             border: 1px solid var(--glass-border);
             border-radius: 100px;
-            font-size: 14px;
-            font-weight: 600;
+            font-size: 13px;
+            font-weight: 500;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            backdrop-filter: var(--glass-blur);
+        }
+
+        .chip svg {
+            color: var(--accent-cyan);
         }
 
         .cta-button {
             display: inline-flex;
             align-items: center;
-            gap: 16px;
-            padding: 26px 60px;
+            gap: 14px;
+            padding: 22px 48px;
             background: var(--accent-cyan);
             color: #000;
             text-decoration: none;
-            border-radius: 24px;
-            font-weight: 800;
-            font-size: 18px;
-            letter-spacing: 1px;
-            box-shadow: 0 10px 40px -5px var(--accent-glow);
+            border-radius: 18px;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 10px 40px -10px var(--accent-glow);
             transition: var(--transition);
             text-transform: uppercase;
         }
 
         .cta-button:hover {
-            transform: translateY(-5px) scale(1.03);
-            box-shadow: 0 20px 60px -5px var(--accent-glow);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px -5px var(--accent-glow);
         }
 
         /* Sections common */
+        section {
+            padding: 120px 0;
+        }
+
         h2 {
-            font-size: 48px;
+            font-size: 38px;
             text-align: center;
-            margin-bottom: 60px;
+            margin-bottom: 70px;
             font-weight: 700;
             letter-spacing: -0.02em;
         }
 
-        /* Features */
+        /* Advantages Grid - Вернул карточки */
         .features-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-        }
-
-        .feature-item {
-            display: flex;
-            flex-direction: column;
             gap: 20px;
         }
 
+        .feature-card {
+            background: var(--glass-bg);
+            padding: 40px 30px;
+            border-radius: 32px;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: var(--glass-blur);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .feature-card:hover {
+            border-color: rgba(0, 242, 255, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-10px);
+        }
+
         .icon-box {
-            width: 60px;
-            height: 60px;
-            background: rgba(0, 242, 255, 0.1);
-            border: 1px solid rgba(0, 242, 255, 0.4);
-            border-radius: 18px;
+            width: 48px;
+            height: 48px;
+            background: rgba(0, 242, 255, 0.08);
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
+            margin-bottom: 28px;
             color: var(--accent-cyan);
-            box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
         }
 
-        .feature-item h3 {
-            font-size: 20px;
-            font-weight: 700;
+        .feature-card h3 {
+            margin-bottom: 18px;
+            font-size: 19px;
+            font-weight: 600;
         }
 
-        .feature-item p {
+        .feature-card p {
             color: var(--text-secondary);
-            font-size: 15px;
+            font-size: 14px;
             line-height: 1.7;
         }
 
-        /* Critique */
-        .critique-text {
+        /* Critique Section */
+        .critique-box {
+            background: var(--glass-bg);
+            border: 1px solid rgba(255, 50, 50, 0.15);
+            padding: 70px 40px;
+            border-radius: 40px;
             text-align: center;
-            font-size: 20px;
-            max-width: 900px;
+            backdrop-filter: var(--glass-blur);
+        }
+
+        .critique-box p {
+            max-width: 850px;
             margin: 0 auto;
+            font-size: 18px;
+            color: var(--text-secondary);
             font-weight: 300;
         }
 
-        /* Terms */
+        /* Transparency List */
         .transparency-list {
-            display: grid;
+            display: flex;
+            flex-direction: column;
             gap: 24px;
+            max-width: 850px;
+            margin: 0 auto;
         }
 
         .list-item {
+            background: var(--glass-bg);
             padding: 32px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--glass-border);
             border-radius: 24px;
-            border-left: 4px solid var(--accent-cyan);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: var(--glass-blur);
+            border-left: 2px solid var(--accent-cyan);
         }
 
         .list-item strong {
@@ -316,29 +322,30 @@
             margin-bottom: 8px;
             color: var(--accent-cyan);
             text-transform: uppercase;
-            font-size: 12px;
+            font-size: 11px;
             letter-spacing: 2px;
-            font-weight: 800;
+            font-weight: 700;
         }
 
         /* FAQ Accordion */
+        .faq-container {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
         .faq-item {
             border-bottom: 1px solid var(--glass-border);
         }
 
-        .faq-item:last-child {
-            border-bottom: none;
-        }
-
         .faq-trigger {
             width: 100%;
-            padding: 32px 0;
+            padding: 28px 0;
             background: none;
             border: none;
             color: #fff;
             text-align: left;
-            font-size: 20px;
-            font-weight: 600;
+            font-size: 18px;
+            font-weight: 500;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
@@ -351,33 +358,46 @@
             overflow: hidden;
             transition: var(--transition);
             color: var(--text-secondary);
-            font-size: 17px;
+            font-size: 16px;
         }
 
         .faq-item.active .faq-content {
-            max-height: 400px;
+            max-height: 300px;
             padding-bottom: 32px;
         }
 
         .faq-item.active svg {
             transform: rotate(180deg);
+        }
+
+        .faq-trigger svg {
+            transition: var(--transition);
             color: var(--accent-cyan);
         }
 
-        /* Pricing */
-        .pricing-content {
+        /* Pricing Card */
+        .pricing-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--accent-cyan);
+            padding: 80px 40px;
+            border-radius: 48px;
             text-align: center;
+            max-width: 650px;
+            margin: 0 auto;
+            position: relative;
+            backdrop-filter: var(--glass-blur);
+            box-shadow: 0 20px 60px -20px var(--accent-glow);
         }
 
         .price {
-            font-size: 90px;
-            font-weight: 800;
+            font-size: 72px;
+            font-weight: 700;
             margin-bottom: 10px;
-            letter-spacing: -0.05em;
+            letter-spacing: -0.04em;
         }
 
         .price span {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 400;
             color: var(--text-secondary);
         }
@@ -385,69 +405,66 @@
         .includes-list {
             text-align: left;
             list-style: none;
-            margin: 48px auto;
-            max-width: 500px;
+            margin: 40px 0;
         }
 
         .includes-list li {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             display: flex;
             align-items: flex-start;
-            gap: 18px;
-            font-size: 18px;
+            gap: 16px;
+            color: var(--text-secondary);
+            font-size: 16px;
         }
 
         .includes-list li svg {
             color: var(--accent-cyan);
             flex-shrink: 0;
             margin-top: 4px;
-            filter: drop-shadow(0 0 5px var(--accent-cyan));
         }
 
         /* Footer */
         footer {
-            padding: 120px 0;
+            padding: 80px 0;
+            border-top: 1px solid var(--glass-border);
             text-align: center;
             color: var(--text-secondary);
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .footer-links {
-            margin-bottom: 40px;
+            margin-bottom: 32px;
             display: flex;
             justify-content: center;
-            gap: 48px;
+            gap: 32px;
         }
 
         .footer-links a {
-            color: #fff;
+            color: var(--text-primary);
             text-decoration: none;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
             transition: var(--transition);
+            font-weight: 500;
         }
 
         .footer-links a:hover {
             color: var(--accent-cyan);
-            text-shadow: 0 0 10px var(--accent-cyan);
         }
 
         /* Responsive */
-        @media (max-width: 1240px) {
-            .glass-panel { margin: 40px 24px; }
-        }
-
-        @media (max-width: 992px) {
-            .features-grid { grid-template-columns: repeat(2, 1fr); gap: 40px; }
+        @media (max-width: 1100px) {
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         @media (max-width: 768px) {
-            h1 { font-size: 48px; }
-            h2 { font-size: 36px; }
-            .features-grid { grid-template-columns: 1fr; }
-            .glass-panel { padding: 50px 24px; }
-            .price { font-size: 64px; }
+            h1 { font-size: 44px; }
+            h2 { font-size: 30px; }
+            section { padding: 80px 0; }
+            .pricing-card { padding: 50px 24px; }
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -455,10 +472,9 @@
 
     <!-- Preloader -->
     <div id="preloader">
-        <div id="loader-text">Initializing Systems</div>
-        <div id="loader-bar-bg"><div id="loader-fill"></div></div>
-        <div id="loader-percent">0%</div>
+        <div id="loader-text">Initializing Secure Connection</div>
         <div id="loader-bar-bg"><div id="loader-bar-fill"></div></div>
+        <div id="loader-percent">0%</div>
     </div>
 
     <div id="bg-canvas-container">
@@ -466,66 +482,66 @@
         <div class="overlay"></div>
     </div>
 
-    <header>
-        <div class="logo">
-            <div class="logo-dot"></div>
-            HYSTERIA 2
-        </div>
-    </header>
-
     <div class="container">
-        <section class="glass-panel hero">
-            <h1 class="neon-title">Твой личный <span class="accent">интернет</span><br>без границ и <span class="accent">цензуры</span></h1>
+        <header>
+            <div class="logo">
+                <div class="logo-dot"></div>
+                HYSTERIA 2
+            </div>
+        </header>
+
+        <section class="hero">
+            <h1>Твой личный <span class="accent">интернет</span><br>без границ и <span class="accent">цензуры</span></h1>
             <p>Профессиональная настройка персонального VPN на базе Hysteria 2. Стабильный доступ к любым сервисам на максимальной скорости вашего провайдера.</p>
             
             <div class="hero-chips">
                 <div class="chip">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
                     YouTube в 4K
                 </div>
                 <div class="chip">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                     Личный IP
                 </div>
                 <div class="chip">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
                     Turbo Speed
                 </div>
             </div>
 
             <a href="https://t.me/your_username" class="cta-button">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                 Связаться в Telegram
             </a>
         </section>
 
-        <section class="glass-panel">
-            <h2 class="neon-title">Технологии, которые <span class="accent">работают</span></h2>
+        <section id="advantages">
+            <h2>Технологии, которые <span class="accent">работают</span></h2>
             <div class="features-grid">
-                <div class="feature-item">
+                <div class="feature-card">
                     <div class="icon-box">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
                     </div>
                     <h3>Раздельное туннелирование</h3>
                     <p>VPN работает только там, где нужно. Банковские приложения и госуслуги работают напрямую.</p>
                 </div>
-                <div class="feature-item">
+                <div class="feature-card">
                     <div class="icon-box">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                     </div>
                     <h3>Установи и забудь</h3>
                     <p>Настроили один раз, и VPN работает в фоновом режиме. Не нужно включать вручную.</p>
                 </div>
-                <div class="feature-item">
+                <div class="feature-card">
                     <div class="icon-box">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                     </div>
                     <h3>Полная скрытность</h3>
                     <p>Трафик маскируется под обычный HTTPS. Провайдер видит лишь стандартные пакеты.</p>
                 </div>
-                <div class="feature-item">
+                <div class="feature-card">
                     <div class="icon-box">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
                     </div>
                     <h3>Умная маршрутизация</h3>
                     <p>Автоматический обход блокировок без влияния на скорость внутри страны.</p>
@@ -533,15 +549,15 @@
             </div>
         </section>
 
-        <section class="glass-panel">
-            <h2 class="neon-title">Почему массовые VPN <span class="accent">не выход</span>?</h2>
-            <div class="critique-text">
+        <section id="critique">
+            <h2>Почему массовые VPN <span class="accent">не выход</span>?</h2>
+            <div class="critique-box">
                 <p>Популярные протоколы (Shadowsocks, Wireguard, VLESS) легко вычисляются и блокируются современными системами. Бесплатные сервисы перегружены, небезопасны и часто продают ваши данные. Мы предлагаем индивидуальный подход и протоколы нового поколения.</p>
             </div>
         </section>
 
-        <section class="glass-panel">
-            <h2 class="neon-title">Прозрачные <span class="accent">условия</span></h2>
+        <section id="terms">
+            <h2>Прозрачные <span class="accent">условия</span></h2>
             <div class="transparency-list">
                 <div class="list-item">
                     <strong>ОГРАНИЧЕНИЯ</strong>
@@ -562,13 +578,13 @@
             </div>
         </section>
 
-        <section class="glass-panel">
-            <h2 class="neon-title">Часто задаваемые <span class="accent">вопросы</span></h2>
+        <section id="faq">
+            <h2>Часто задаваемые <span class="accent">вопросы</span></h2>
             <div class="faq-container">
                 <div class="faq-item">
                     <button class="faq-trigger">
                         В чем разница между вашей настройкой и обычным VPN?
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </button>
                     <div class="faq-content">
                         <p>Обычные приложения используют общие сервера с тысячами пользователей. Мы настраиваем ваш личный сервер с персональным IP, используя протоколы, которые маскируют трафик под легитимный.</p>
@@ -577,7 +593,7 @@
                 <div class="faq-item">
                     <button class="faq-trigger">
                         Смогу ли я смотреть YouTube в 4K?
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </button>
                     <div class="faq-content">
                         <p>Да, это одна из ключевых фишек. Наша настройка обеспечивает максимальную скорость вашего провайдера, достаточную для потокового видео в высоком качестве.</p>
@@ -586,7 +602,7 @@
                 <div class="faq-item">
                     <button class="faq-trigger">
                         Нужны ли мне технические навыки для использования?
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </button>
                     <div class="faq-content">
                         <p>Нет. В стоимость входит помощь в установке софта. После настройки использование VPN будет для вас полностью прозрачным и автоматическим.</p>
@@ -595,7 +611,7 @@
                 <div class="faq-item">
                     <button class="faq-trigger">
                         Что если услуга мне не понравится?
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </button>
                     <div class="faq-content">
                         <p>Мы предоставляем тестовый период на 1 час на нашем сервере. Оплата за настройку производится только после того, как вы проверите работу.</p>
@@ -604,7 +620,7 @@
                 <div class="faq-item">
                     <button class="faq-trigger">
                         Как долго работает эта настройка?
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </button>
                     <div class="faq-content">
                         <p>Настройка единоразовая. Она будет работать до тех пор, пока вы оплачиваете хостинг. Мы предложим обновление в случае изменений технологий блокировок.</p>
@@ -613,16 +629,16 @@
             </div>
         </section>
 
-        <section class="glass-panel">
-            <div class="pricing-content">
-                <h2 class="neon-title">Стоимость и <span class="accent">состав</span></h2>
+        <section id="pricing">
+            <div class="pricing-card">
+                <h2>Стоимость и <span class="accent">состав</span></h2>
                 <div class="price">2500₽ <span>/ единоразово</span></div>
                 <ul class="includes-list">
-                    <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><polyline points="20 6 9 17 4 12"></polyline></svg> Подробная консультация и установка софта</li>
-                    <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><polyline points="20 6 9 17 4 12"></polyline></svg> Тестовый период (1 час) для проверки</li>
-                    <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><polyline points="20 6 9 17 4 12"></polyline></svg> 2 конфигурации (ПК + Смартфон)</li>
-                    <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><polyline points="20 6 9 17 4 12"></polyline></svg> Полная настройка в течение часа</li>
-                    <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><polyline points="20 6 9 17 4 12"></polyline></svg> Оплата строго по факту успеха</li>
+                    <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Подробная консультация и установка софта</li>
+                    <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Тестовый период (1 час) для проверки</li>
+                    <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> 2 конфигурации (ПК + Смартфон)</li>
+                    <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Полная настройка в течение часа</li>
+                    <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Оплата строго по факту успеха</li>
                 </ul>
                 <a href="https://t.me/your_username" class="cta-button" style="width: 100%; justify-content: center;">Заказать настройку</a>
             </div>
@@ -646,9 +662,6 @@
         let lastFrame = -1;
         let loadedCount = 0;
 
-        /**
-         * Обновление кадра по скроллу
-         */
         function handleScrollAnimation() {
             if (!frameElement) return;
             const scrollY = window.scrollY;
@@ -663,9 +676,6 @@
             }
         }
 
-        /**
-         * Предзагрузка всех 80 кадров
-         */
         function preloadFrames() {
             for (let i = 0; i < totalFrames; i++) {
                 const img = new Image();
@@ -684,14 +694,10 @@
                         }, 500);
                     }
                 };
-                img.onerror = () => {
-                    // Обработка ошибки, чтобы не блокировать загрузку
-                    loadedCount++;
-                };
+                img.onerror = () => loadedCount++;
             }
         }
 
-        // FAQ Accordion
         document.querySelectorAll('.faq-trigger').forEach(trigger => {
             trigger.addEventListener('click', () => {
                 const parent = trigger.parentElement;
@@ -701,15 +707,11 @@
             });
         });
 
-        // Слушатели
         window.addEventListener('scroll', () => {
             requestAnimationFrame(handleScrollAnimation);
         }, { passive: true });
 
-        // Инициализация
-        document.addEventListener('DOMContentLoaded', () => {
-            preloadFrames();
-        });
+        document.addEventListener('DOMContentLoaded', preloadFrames);
     </script>
 </body>
 </html>
