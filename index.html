@@ -1,1 +1,621 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hysteria 2 — Твой личный интернет без границ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #050505;
+            --card-bg: rgba(20, 20, 22, 0.7);
+            --accent-cyan: #00f2ff;
+            --accent-glow: rgba(0, 242, 255, 0.3);
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Анимированный фон */
+        #bg-canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        #bg-frame {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.4;
+            filter: saturate(1.2) contrast(1.1) brightness(0.8);
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, var(--bg-color) 100%);
+        }
+
+        /* Стилизация контейнера */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        header {
+            padding: 40px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 24px;
+            letter-spacing: -1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent-cyan);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 100px 0 140px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: clamp(40px, 8vw, 72px);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -0.04em;
+            background: linear-gradient(180deg, #fff 0%, #888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 48px;
+            font-weight: 300;
+        }
+
+        .hero-chips {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 48px;
+        }
+
+        .chip {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 100px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(10px);
+        }
+
+        .chip svg {
+            color: var(--accent-cyan);
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 20px 40px;
+            background: var(--accent-cyan);
+            color: #000;
+            text-decoration: none;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 18px;
+            box-shadow: 0 0 30px var(--accent-glow);
+            transition: var(--transition);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 0 50px var(--accent-glow);
+        }
+
+        /* Sections common */
+        section {
+            padding: 100px 0;
+        }
+
+        h2 {
+            font-size: 42px;
+            text-align: center;
+            margin-bottom: 60px;
+            letter-spacing: -0.02em;
+        }
+
+        /* Advantages Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 24px;
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(20px);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            border-color: rgba(0, 242, 255, 0.4);
+            transform: translateY(-8px);
+        }
+
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            background: rgba(0, 242, 255, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            color: var(--accent-cyan);
+        }
+
+        .feature-card h3 {
+            margin-bottom: 16px;
+            font-size: 20px;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+
+        /* Comparison Section */
+        .critique-box {
+            background: linear-gradient(145deg, rgba(255,0,0,0.05) 0%, rgba(0,0,0,0) 100%);
+            border: 1px solid rgba(255, 50, 50, 0.2);
+            padding: 60px;
+            border-radius: 32px;
+            text-align: center;
+        }
+
+        .critique-box p {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 18px;
+            color: var(--text-secondary);
+        }
+
+        /* Transparency List */
+        .transparency-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .list-item {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 24px;
+            border-radius: 16px;
+            border-left: 4px solid var(--accent-cyan);
+        }
+
+        .list-item strong {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        /* FAQ Accordion */
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .faq-trigger {
+            width: 100%;
+            padding: 24px 0;
+            background: none;
+            border: none;
+            color: #fff;
+            text-align: left;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: var(--transition);
+            color: var(--text-secondary);
+            padding-bottom: 0;
+        }
+
+        .faq-item.active .faq-content {
+            max-height: 300px;
+            padding-bottom: 24px;
+        }
+
+        .faq-item.active svg {
+            transform: rotate(180deg);
+        }
+
+        .faq-trigger svg {
+            transition: var(--transition);
+            color: var(--accent-cyan);
+        }
+
+        /* Pricing Card */
+        .pricing-card {
+            background: radial-gradient(circle at top right, rgba(0, 242, 255, 0.1), transparent);
+            border: 1px solid var(--accent-cyan);
+            padding: 60px;
+            border-radius: 32px;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .price {
+            font-size: 64px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .price span {
+            font-size: 24px;
+            font-weight: 400;
+            color: var(--text-secondary);
+        }
+
+        .includes-list {
+            text-align: left;
+            list-style: none;
+            margin: 32px 0;
+        }
+
+        .includes-list li {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-secondary);
+        }
+
+        .includes-list li svg {
+            color: var(--accent-cyan);
+            flex-shrink: 0;
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 0;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .footer-links {
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+        }
+
+        .footer-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-cyan);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 48px; }
+            h2 { font-size: 32px; }
+            .hero { padding: 60px 0 80px; }
+            .feature-card { padding: 30px; }
+            .pricing-card { padding: 40px 20px; }
+            .critique-box { padding: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="bg-canvas-container">
+        <img id="bg-frame" src="/frames/frame_00_delay-0.1s.webp" alt="background">
+        <div class="overlay"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-dot"></div>
+                HYSTERIA 2
+            </div>
+            <div class="nav-links">
+                <!-- Empty for minimalism or small links -->
+            </div>
+        </header>
+
+        <section class="hero">
+            <h1>Твой личный интернет<br>без границ и цензуры</h1>
+            <p>Профессиональная настройка персонального VPN на базе Hysteria 2. Стабильный доступ к любым сервисам на максимальной скорости вашего провайдера.</p>
+            
+            <div class="hero-chips">
+                <div class="chip">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                    YouTube в 4K без пауз
+                </div>
+                <div class="chip">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    Личный IP-адрес
+                </div>
+                <div class="chip">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                    Скорость без потерь
+                </div>
+            </div>
+
+            <a href="https://t.me/your_username" class="cta-button">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                Связаться для настройки
+            </a>
+        </section>
+
+        <section id="advantages">
+            <h2>Технологии, которые работают</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="icon-box">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                    </div>
+                    <h3>Раздельное туннелирование</h3>
+                    <p>VPN работает только там, где нужно. Банковские приложения и госуслуги работают напрямую, без задержек и блокировок со стороны банков.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon-box">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    </div>
+                    <h3>Установи и забудь</h3>
+                    <p>Настроили один раз, и VPN работает в фоновом режиме. Не нужно постоянно включать и выключать его вручную при смене сайтов.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon-box">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    </div>
+                    <h3>Полная скрытность</h3>
+                    <p>Трафик маскируется под обычный HTTPS. Провайдер не обнаруживает использование VPN, видя лишь стандартное посещение сайта.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon-box">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                    </div>
+                    <h3>Умная маршрутизация</h3>
+                    <p>Автоматический обход блокировок без влияния на скорость внутри страны. Ощущается как обычный быстрый интернет.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="critique">
+            <h2>Почему массовые VPN больше не выход?</h2>
+            <div class="critique-box">
+                <p>Популярные протоколы (Shadowsocks, Wireguard, VLESS) легко вычисляются и блокируются современными системами. Бесплатные сервисы перегружены, небезопасны и часто продают ваши данные. Мы предлагаем индивидуальный подход и протоколы нового поколения, которые крайне сложно обнаружить.</p>
+            </div>
+        </section>
+
+        <section id="terms">
+            <h2>Прозрачные условия</h2>
+            <div class="transparency-list">
+                <div class="list-item">
+                    <strong>ОГРАНИЧЕНИЯ</strong>
+                    Наше решение не помогает при полном отключении интернета («чебурнет»), так как ни один VPN не может обойти физическое отсутствие связи.
+                </div>
+                <div class="list-item">
+                    <strong>ЛОКАЦИИ</strong>
+                    По умолчанию устанавливаем Голландию или Польшу (обсуждается индивидуально). Оптимальные маршруты для РФ.
+                </div>
+                <div class="list-item">
+                    <strong>МОДЕЛЬ ОПЛАТЫ</strong>
+                    Вы платите единоразово за мою работу (настройку). Хостинг (сервер) вы оплачиваете напрямую провайдеру ежемесячно.
+                </div>
+                <div class="list-item">
+                    <strong>ВАРИАНТЫ ХОСТИНГА</strong>
+                    Мы рекомендуем надежных зарубежных провайдеров с оплатой картами РФ/СБП (от 5$ в месяц). При наличии иностранных карт — выбор безграничен.
+                </div>
+            </div>
+        </section>
+
+        <section id="faq">
+            <h2>Часто задаваемые вопросы</h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <button class="faq-trigger">
+                        В чем разница между вашей настройкой и обычным VPN?
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                    <div class="faq-content">
+                        <p>Обычные приложения используют общие сервера с тысячами пользователей, что ведет к блокировкам и низкой скорости. Мы настраиваем ваш личный сервер с персональным IP, используя протоколы, которые маскируют трафик под легитимный.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-trigger">
+                        Смогу ли я смотреть YouTube в 4K?
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                    <div class="faq-content">
+                        <p>Да, это одна из ключевых фишек. Наша настройка обеспечивает максимальную скорость вашего провайдера, достаточную для потокового видео в высоком качестве без буферизации.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-trigger">
+                        Нужны ли мне технические навыки для использования?
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                    <div class="faq-content">
+                        <p>Нет. В стоимость входит помощь в установке софта. После настройки использование VPN будет для вас полностью прозрачным и автоматическим на всех устройствах.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-trigger">
+                        Что если услуга мне не понравится?
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                    <div class="faq-content">
+                        <p>Мы предоставляем тестовый период на 1 час на нашем сервере. Оплата за настройку производится только после того, как вы проверите работу и останетесь довольны результатом.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-trigger">
+                        Как долго работает эта настройка?
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                    <div class="faq-content">
+                        <p>Настройка единоразовая. Она будет работать до тех пор, пока вы оплачиваете хостинг. В случае глобальных изменений технологий блокировок, мы предложим обновление конфигурации.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="pricing">
+            <div class="pricing-card">
+                <h2>Стоимость и состав</h2>
+                <div class="price">2500₽ <span>/ единоразово</span></div>
+                <ul class="includes-list">
+                    <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Подробная консультация и установка софта</li>
+                    <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Тестовый период (1 час) для проверки скорости</li>
+                    <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> 2 конфигурации (ПК + Смартфон)</li>
+                    <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Полная настройка в течение часа</li>
+                    <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Оплата строго по факту успеха</li>
+                </ul>
+                <a href="https://t.me/your_username" class="cta-button" style="width: 100%; justify-content: center;">Заказать настройку</a>
+            </div>
+        </section>
+
+        <footer>
+            <div class="footer-links">
+                <a href="#">Telegram</a>
+                <a href="#">Поддержка</a>
+            </div>
+            <p>© 2024 Hysteria 2 Personal Setup. Premium Security Solutions.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Анимация фона (80 кадров)
+        const frameElement = document.getElementById('bg-frame');
+        const totalFrames = 80;
+        let currentFrame = 0;
+
+        function updateFrame() {
+            currentFrame = (currentFrame + 1) % totalFrames;
+            const frameIndex = String(currentFrame).padStart(2, '0');
+            frameElement.src = `/frames/frame_${frameIndex}_delay-0.1s.webp`;
+            
+            // Задержка примерно 10 FPS для стиля и оптимизации
+            setTimeout(() => {
+                requestAnimationFrame(updateFrame);
+            }, 100);
+        }
+
+        // FAQ Accordion Logic
+        document.querySelectorAll('.faq-trigger').forEach(trigger => {
+            trigger.addEventListener('click', () => {
+                const parent = trigger.parentElement;
+                const isActive = parent.classList.contains('active');
+                
+                // Close other items
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+
+                if (!isActive) {
+                    parent.classList.add('active');
+                }
+            });
+        });
+
+        // Плавная прокрутка
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Запуск анимации после загрузки
+        window.onload = () => {
+            requestAnimationFrame(updateFrame);
+        };
+    </script>
+</body>
+</html>
