@@ -11,11 +11,11 @@
         :root {
             --bg-color: #030303;
             --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.1);
             --accent-cyan: #00f2ff;
             --accent-glow: rgba(0, 242, 255, 0.4);
             --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.65);
+            --text-secondary: rgba(255, 255, 255, 0.7);
             --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             --glass-blur: blur(25px);
         }
@@ -85,7 +85,7 @@
             letter-spacing: -1px;
         }
 
-        /* Анимированный фон с размытием */
+        /* Анимированный фон */
         #bg-canvas-container {
             position: fixed;
             top: 0;
@@ -100,24 +100,33 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0.5;
-            filter: blur(10px) saturate(1.1) contrast(1.1) brightness(0.6);
-            will-change: src;
+            opacity: 0.8;
+            filter: blur(12px) saturate(1.1) contrast(1.1); /* Блюр для мягкости и скрытия артефактов */
+            will-change: src, filter;
+            transition: filter 0.3s ease;
         }
 
-        .overlay {
+        #bg-overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at center, transparent 0%, var(--bg-color) 100%);
+            background: rgba(3, 3, 3, 0.1); /* Начальное минимальное затемнение */
+            transition: background 0.3s ease;
         }
 
         .container {
             max-width: 1100px;
             margin: 0 auto;
             padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Тень для текста для читаемости на светлом фоне */
+        h1, h2, h3, p, li, strong {
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
 
         /* Header */
@@ -165,11 +174,11 @@
         }
 
         .hero p {
-            font-size: 18px;
-            color: var(--text-secondary);
+            font-size: 19px;
+            color: var(--text-primary); /* Белый для лучшей читаемости */
             max-width: 650px;
             margin: 0 auto 48px;
-            font-weight: 300;
+            font-weight: 400;
         }
 
         .hero-chips {
@@ -186,7 +195,7 @@
             border: 1px solid var(--glass-border);
             border-radius: 100px;
             font-size: 13px;
-            font-weight: 500;
+            font-weight: 600;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -212,6 +221,7 @@
             box-shadow: 0 10px 40px -10px var(--accent-glow);
             transition: var(--transition);
             text-transform: uppercase;
+            text-shadow: none; /* Кнопке тень не нужна */
         }
 
         .cta-button:hover {
@@ -225,14 +235,14 @@
         }
 
         h2 {
-            font-size: 38px;
+            font-size: 42px;
             text-align: center;
             margin-bottom: 70px;
             font-weight: 700;
             letter-spacing: -0.02em;
         }
 
-        /* Advantages Grid - Вернул карточки */
+        /* Advantages Grid */
         .features-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -240,7 +250,7 @@
         }
 
         .feature-card {
-            background: var(--glass-bg);
+            background: rgba(0, 0, 0, 0.3); /* Легкая подложка для контраста текста */
             padding: 40px 30px;
             border-radius: 32px;
             border: 1px solid var(--glass-border);
@@ -251,15 +261,15 @@
         }
 
         .feature-card:hover {
-            border-color: rgba(0, 242, 255, 0.3);
-            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 242, 255, 0.4);
+            background: rgba(0, 0, 0, 0.5);
             transform: translateY(-10px);
         }
 
         .icon-box {
             width: 48px;
             height: 48px;
-            background: rgba(0, 242, 255, 0.08);
+            background: rgba(0, 242, 255, 0.1);
             border: 1px solid rgba(0, 242, 255, 0.2);
             border-radius: 16px;
             display: flex;
@@ -271,21 +281,21 @@
 
         .feature-card h3 {
             margin-bottom: 18px;
-            font-size: 19px;
-            font-weight: 600;
+            font-size: 20px;
+            font-weight: 700;
         }
 
         .feature-card p {
             color: var(--text-secondary);
-            font-size: 14px;
+            font-size: 14.5px;
             line-height: 1.7;
         }
 
         /* Critique Section */
         .critique-box {
-            background: var(--glass-bg);
-            border: 1px solid rgba(255, 50, 50, 0.15);
-            padding: 70px 40px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 50, 50, 0.2);
+            padding: 80px 40px;
             border-radius: 40px;
             text-align: center;
             backdrop-filter: var(--glass-blur);
@@ -294,9 +304,9 @@
         .critique-box p {
             max-width: 850px;
             margin: 0 auto;
-            font-size: 18px;
-            color: var(--text-secondary);
-            font-weight: 300;
+            font-size: 19px;
+            color: #fff;
+            font-weight: 400;
         }
 
         /* Transparency List */
@@ -309,12 +319,12 @@
         }
 
         .list-item {
-            background: var(--glass-bg);
+            background: rgba(0, 0, 0, 0.4);
             padding: 32px;
             border-radius: 24px;
             border: 1px solid var(--glass-border);
             backdrop-filter: var(--glass-blur);
-            border-left: 2px solid var(--accent-cyan);
+            border-left: 3px solid var(--accent-cyan);
         }
 
         .list-item strong {
@@ -322,9 +332,9 @@
             margin-bottom: 8px;
             color: var(--accent-cyan);
             text-transform: uppercase;
-            font-size: 11px;
+            font-size: 12px;
             letter-spacing: 2px;
-            font-weight: 700;
+            font-weight: 800;
         }
 
         /* FAQ Accordion */
@@ -339,13 +349,13 @@
 
         .faq-trigger {
             width: 100%;
-            padding: 28px 0;
+            padding: 30px 0;
             background: none;
             border: none;
             color: #fff;
             text-align: left;
-            font-size: 18px;
-            font-weight: 500;
+            font-size: 19px;
+            font-weight: 600;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
@@ -358,7 +368,7 @@
             overflow: hidden;
             transition: var(--transition);
             color: var(--text-secondary);
-            font-size: 16px;
+            font-size: 16.5px;
         }
 
         .faq-item.active .faq-content {
@@ -377,7 +387,7 @@
 
         /* Pricing Card */
         .pricing-card {
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(0, 0, 0, 0.5);
             border: 1px solid var(--accent-cyan);
             padding: 80px 40px;
             border-radius: 48px;
@@ -386,18 +396,18 @@
             margin: 0 auto;
             position: relative;
             backdrop-filter: var(--glass-blur);
-            box-shadow: 0 20px 60px -20px var(--accent-glow);
+            box-shadow: 0 20px 80px -20px var(--accent-glow);
         }
 
         .price {
-            font-size: 72px;
-            font-weight: 700;
+            font-size: 80px;
+            font-weight: 800;
             margin-bottom: 10px;
             letter-spacing: -0.04em;
         }
 
         .price span {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 400;
             color: var(--text-secondary);
         }
@@ -409,12 +419,13 @@
         }
 
         .includes-list li {
-            margin-bottom: 16px;
+            margin-bottom: 18px;
             display: flex;
             align-items: flex-start;
             gap: 16px;
-            color: var(--text-secondary);
-            font-size: 16px;
+            color: #fff;
+            font-size: 17px;
+            font-weight: 500;
         }
 
         .includes-list li svg {
@@ -425,25 +436,27 @@
 
         /* Footer */
         footer {
-            padding: 80px 0;
+            padding: 100px 0;
             border-top: 1px solid var(--glass-border);
             text-align: center;
             color: var(--text-secondary);
-            font-size: 13px;
+            font-size: 14px;
         }
 
         .footer-links {
             margin-bottom: 32px;
             display: flex;
             justify-content: center;
-            gap: 32px;
+            gap: 40px;
         }
 
         .footer-links a {
-            color: var(--text-primary);
+            color: #fff;
             text-decoration: none;
             transition: var(--transition);
-            font-weight: 500;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .footer-links a:hover {
@@ -459,7 +472,7 @@
 
         @media (max-width: 768px) {
             h1 { font-size: 44px; }
-            h2 { font-size: 30px; }
+            h2 { font-size: 32px; }
             section { padding: 80px 0; }
             .pricing-card { padding: 50px 24px; }
             .features-grid {
@@ -472,14 +485,14 @@
 
     <!-- Preloader -->
     <div id="preloader">
-        <div id="loader-text">Initializing Secure Connection</div>
+        <div id="loader-text">Securing Tunnels</div>
         <div id="loader-bar-bg"><div id="loader-bar-fill"></div></div>
         <div id="loader-percent">0%</div>
     </div>
 
     <div id="bg-canvas-container">
         <img id="bg-frame" src="frames/frame_00_delay-0.1s.webp" alt="background">
-        <div class="overlay"></div>
+        <div id="bg-overlay"></div>
     </div>
 
     <div class="container">
@@ -496,21 +509,21 @@
             
             <div class="hero-chips">
                 <div class="chip">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
                     YouTube в 4K
                 </div>
                 <div class="chip">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                     Личный IP
                 </div>
                 <div class="chip">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
                     Turbo Speed
                 </div>
             </div>
 
             <a href="https://t.me/your_username" class="cta-button">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                 Связаться в Telegram
             </a>
         </section>
@@ -634,11 +647,11 @@
                 <h2>Стоимость и <span class="accent">состав</span></h2>
                 <div class="price">2500₽ <span>/ единоразово</span></div>
                 <ul class="includes-list">
-                    <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Подробная консультация и установка софта</li>
-                    <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Тестовый период (1 час) для проверки</li>
-                    <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> 2 конфигурации (ПК + Смартфон)</li>
-                    <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Полная настройка в течение часа</li>
-                    <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Оплата строго по факту успеха</li>
+                    <li><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Подробная консультация и установка софта</li>
+                    <li><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Тестовый период (1 час) для проверки</li>
+                    <li><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="20 6 9 17 4 12"></polyline></svg> 2 конфигурации (ПК + Смартфон)</li>
+                    <li><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Полная настройка в течение часа</li>
+                    <li><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Оплата строго по факту успеха</li>
                 </ul>
                 <a href="https://t.me/your_username" class="cta-button" style="width: 100%; justify-content: center;">Заказать настройку</a>
             </div>
@@ -655,6 +668,7 @@
 
     <script>
         const frameElement = document.getElementById('bg-frame');
+        const overlayElement = document.getElementById('bg-overlay');
         const preloader = document.getElementById('preloader');
         const loaderBarFill = document.getElementById('loader-bar-fill');
         const loaderPercent = document.getElementById('loader-percent');
@@ -662,20 +676,37 @@
         let lastFrame = -1;
         let loadedCount = 0;
 
-        function handleScrollAnimation() {
-            if (!frameElement) return;
+        /**
+         * Управление анимацией и динамическим затемнением
+         */
+        function handleScrollEffect() {
+            if (!frameElement || !overlayElement) return;
+
             const scrollY = window.scrollY;
             const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
             const scrollFraction = Math.max(0, Math.min(1, scrollY / maxScroll));
-            const frameIndex = Math.floor(scrollFraction * (totalFrames - 1));
 
+            // Смена кадров
+            const frameIndex = Math.floor(scrollFraction * (totalFrames - 1));
             if (frameIndex !== lastFrame) {
                 const formattedIndex = String(frameIndex).padStart(2, '0');
                 frameElement.src = `frames/frame_${formattedIndex}_delay-0.1s.webp`;
                 lastFrame = frameIndex;
             }
+
+            // Динамическое затемнение: от 0.1 до 0.6 в зависимости от скролла
+            const darkFactor = 0.1 + (scrollFraction * 0.5);
+            overlayElement.style.background = `rgba(3, 3, 3, ${darkFactor})`;
+
+            // Динамический блюр: увеличиваем на ярких блоках
+            const blurFactor = 12 + (scrollFraction * 10);
+            const brightnessFactor = 0.8 - (scrollFraction * 0.3);
+            frameElement.style.filter = `blur(${blurFactor}px) saturate(1.1) brightness(${brightnessFactor})`;
         }
 
+        /**
+         * Предзагрузка кадров
+         */
         function preloadFrames() {
             for (let i = 0; i < totalFrames; i++) {
                 const img = new Image();
@@ -690,7 +721,7 @@
                         setTimeout(() => {
                             preloader.style.opacity = '0';
                             setTimeout(() => preloader.style.display = 'none', 800);
-                            handleScrollAnimation();
+                            handleScrollEffect(); // Показ первого кадра
                         }, 500);
                     }
                 };
@@ -698,6 +729,7 @@
             }
         }
 
+        // FAQ Accordion
         document.querySelectorAll('.faq-trigger').forEach(trigger => {
             trigger.addEventListener('click', () => {
                 const parent = trigger.parentElement;
@@ -707,8 +739,9 @@
             });
         });
 
+        // Слушатели
         window.addEventListener('scroll', () => {
-            requestAnimationFrame(handleScrollAnimation);
+            requestAnimationFrame(handleScrollEffect);
         }, { passive: true });
 
         document.addEventListener('DOMContentLoaded', preloadFrames);
