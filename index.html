@@ -10,14 +10,14 @@
     <style>
         :root {
             --bg-color: #030303;
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-bg: rgba(255, 255, 255, 0.04);
+            --glass-border: rgba(255, 255, 255, 0.1);
             --accent-cyan: #00f2ff;
-            --accent-glow: rgba(0, 242, 255, 0.4);
+            --accent-glow: rgba(0, 242, 255, 0.6);
             --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.6);
+            --text-secondary: rgba(255, 255, 255, 0.7);
             --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            --glass-blur: blur(20px);
+            --glass-blur: blur(25px);
         }
 
         * {
@@ -35,7 +35,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Анимированный фон */
+        /* Анимированный фон — Максимальная видимость */
         #bg-canvas-container {
             position: fixed;
             top: 0;
@@ -50,8 +50,8 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0.6; /* Увеличена яркость для видимости анимации */
-            filter: saturate(1.2) contrast(1.1); /* Убрано принудительное затемнение */
+            opacity: 1; /* Полная яркость фреймов */
+            filter: saturate(1.1) contrast(1.05);
             will-change: src;
         }
 
@@ -61,11 +61,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at center, transparent 0%, var(--bg-color) 110%);
+            /* Минимальное виньетирование для читаемости текста, без затемнения центра */
+            background: radial-gradient(circle at center, transparent 30%, rgba(3, 3, 3, 0.4) 100%);
         }
 
         .container {
-            max-width: 1200px; /* Немного расширил для 4 блоков */
+            max-width: 1200px;
             margin: 0 auto;
             padding: 0 24px;
         }
@@ -109,11 +110,13 @@
             line-height: 1.15;
             margin-bottom: 28px;
             letter-spacing: -0.03em;
+            /* Неоновое свечение для заголовка */
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.2), 0 0 30px rgba(0, 242, 255, 0.1);
         }
 
         .accent {
             color: var(--accent-cyan);
-            text-shadow: 0 0 20px var(--accent-glow);
+            text-shadow: 0 0 15px var(--accent-cyan), 0 0 30px var(--accent-glow);
         }
 
         .hero p {
@@ -182,9 +185,10 @@
             margin-bottom: 70px;
             font-weight: 700;
             letter-spacing: -0.02em;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
         }
 
-        /* Advantages Grid - Возвращено в одну строку */
+        /* Advantages Grid - Принудительно в одну строку */
         .features-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -203,22 +207,23 @@
         }
 
         .feature-card:hover {
-            border-color: rgba(0, 242, 255, 0.3);
-            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 242, 255, 0.4);
+            background: rgba(255, 255, 255, 0.08);
             transform: translateY(-10px);
         }
 
         .icon-box {
             width: 48px;
             height: 48px;
-            background: rgba(0, 242, 255, 0.08);
-            border: 1px solid rgba(0, 242, 255, 0.2);
+            background: rgba(0, 242, 255, 0.1);
+            border: 1px solid rgba(0, 242, 255, 0.3);
             border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 24px;
             color: var(--accent-cyan);
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
         }
 
         .feature-card h3 {
@@ -237,7 +242,7 @@
         /* Critique Section */
         .critique-box {
             background: var(--glass-bg);
-            border: 1px solid rgba(255, 50, 50, 0.15);
+            border: 1px solid rgba(255, 50, 50, 0.2);
             padding: 70px 40px;
             border-radius: 40px;
             text-align: center;
@@ -280,14 +285,23 @@
             font-weight: 700;
         }
 
-        /* FAQ Accordion */
+        /* FAQ Accordion - Обернут в стекло */
         .faq-container {
             max-width: 850px;
             margin: 0 auto;
+            background: var(--glass-bg);
+            padding: 40px;
+            border-radius: 40px;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: var(--glass-blur);
         }
 
         .faq-item {
             border-bottom: 1px solid var(--glass-border);
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
         }
 
         .faq-trigger {
@@ -330,7 +344,7 @@
 
         /* Pricing Card */
         .pricing-card {
-            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+            background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%);
             border: 1px solid var(--accent-cyan);
             padding: 80px 40px;
             border-radius: 48px;
@@ -415,6 +429,7 @@
             h2 { font-size: 30px; }
             section { padding: 80px 0; }
             .pricing-card { padding: 50px 24px; }
+            .faq-container { padding: 24px; }
             .features-grid {
                 grid-template-columns: 1fr;
             }
