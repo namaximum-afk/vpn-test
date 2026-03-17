@@ -6,7 +6,8 @@
     <title>Hysteria 2 — Твой личный интернет без границ</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Подключаем два шрифта: Space Grotesk для IT-заголовков и Plus Jakarta Sans для текста -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #030303;
@@ -18,6 +19,7 @@
             --text-secondary: rgba(255, 255, 255, 0.7);
             --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             --glass-blur: blur(25px);
+            --glass-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.8);
         }
 
         * {
@@ -33,6 +35,10 @@
             line-height: 1.6;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, .logo {
+            font-family: 'Space Grotesk', sans-serif;
         }
 
         /* Preloader */
@@ -101,7 +107,6 @@
             height: 100%;
             object-fit: cover;
             opacity: 1;
-            /* Начальный блюр минимальный, чтобы видеть "стену" */
             filter: blur(4px) saturate(1.1) contrast(1.1) brightness(0.9);
             will-change: src, filter, opacity;
             transition: filter 0.2s linear, opacity 0.2s linear;
@@ -113,7 +118,6 @@
             left: 0;
             width: 100%;
             height: 100%;
-            /* Почти прозрачный верх для Hero блока */
             background: rgba(3, 3, 3, 0);
             transition: background 0.2s linear;
         }
@@ -126,9 +130,9 @@
             z-index: 1;
         }
 
-        /* Тень для текста для читаемости на любом фоне */
+        /* Тень для текста */
         h1, h2, h3, p, li, strong, .chip {
-            text-shadow: 0 2px 15px rgba(0, 0, 0, 0.8), 0 1px 4px rgba(0, 0, 0, 0.9);
+            text-shadow: 0 2px 15px rgba(0, 0, 0, 0.8);
         }
 
         /* Header */
@@ -178,7 +182,7 @@
         .hero p {
             font-size: 19px;
             color: var(--text-primary);
-            max-width: 650px;
+            max-width: 760px; /* Ограничение для вмещения в 2 строки */
             margin: 0 auto 48px;
             font-weight: 400;
         }
@@ -193,7 +197,7 @@
 
         .chip {
             padding: 10px 20px;
-            background: rgba(0, 0, 0, 0.3); /* Подложка для чипа */
+            background: rgba(0, 0, 0, 0.3);
             border: 1px solid var(--glass-border);
             border-radius: 100px;
             font-size: 13px;
@@ -202,6 +206,13 @@
             align-items: center;
             gap: 8px;
             backdrop-filter: var(--glass-blur);
+            box-shadow: var(--glass-shadow);
+            transition: var(--transition);
+        }
+
+        .chip:hover {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 20px -5px var(--accent-glow);
         }
 
         .chip svg {
@@ -244,6 +255,21 @@
             letter-spacing: -0.02em;
         }
 
+        /* Glass Panels with depth and hover effect */
+        .glass-panel {
+            background: rgba(0, 0, 0, 0.45);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: var(--glass-blur);
+            box-shadow: var(--glass-shadow);
+            transition: var(--transition);
+        }
+
+        .glass-panel:hover {
+            border-color: rgba(0, 242, 255, 0.4);
+            box-shadow: 0 0 40px -10px var(--accent-glow), var(--glass-shadow);
+            background: rgba(0, 0, 0, 0.6);
+        }
+
         /* Advantages Grid */
         .features-grid {
             display: grid;
@@ -252,19 +278,13 @@
         }
 
         .feature-card {
-            background: rgba(0, 0, 0, 0.45); /* Матовая подложка */
             padding: 40px 30px;
             border-radius: 32px;
-            border: 1px solid var(--glass-border);
-            backdrop-filter: var(--glass-blur);
-            transition: var(--transition);
             display: flex;
             flex-direction: column;
         }
 
         .feature-card:hover {
-            border-color: rgba(0, 242, 255, 0.4);
-            background: rgba(0, 0, 0, 0.6);
             transform: translateY(-10px);
         }
 
@@ -295,12 +315,9 @@
 
         /* Critique Section */
         .critique-box {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 50, 50, 0.2);
             padding: 80px 40px;
             border-radius: 40px;
             text-align: center;
-            backdrop-filter: var(--glass-blur);
         }
 
         .critique-box p {
@@ -321,11 +338,8 @@
         }
 
         .list-item {
-            background: rgba(0, 0, 0, 0.5);
             padding: 32px;
             border-radius: 24px;
-            border: 1px solid var(--glass-border);
-            backdrop-filter: var(--glass-blur);
             border-left: 3px solid var(--accent-cyan);
         }
 
@@ -347,6 +361,7 @@
 
         .faq-item {
             border-bottom: 1px solid var(--glass-border);
+            transition: var(--transition);
         }
 
         .faq-trigger {
@@ -389,7 +404,6 @@
 
         /* Pricing Card */
         .pricing-card {
-            background: rgba(0, 0, 0, 0.6);
             border: 1px solid var(--accent-cyan);
             padding: 80px 40px;
             border-radius: 48px;
@@ -397,8 +411,6 @@
             max-width: 650px;
             margin: 0 auto;
             position: relative;
-            backdrop-filter: var(--glass-blur);
-            box-shadow: 0 20px 80px -20px var(--accent-glow);
         }
 
         .price {
@@ -533,28 +545,28 @@
         <section id="advantages">
             <h2>Технологии, которые <span class="accent">работают</span></h2>
             <div class="features-grid">
-                <div class="feature-card">
+                <div class="feature-card glass-panel">
                     <div class="icon-box">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
                     </div>
                     <h3>Раздельное туннелирование</h3>
                     <p>VPN работает только там, где нужно. Банковские приложения и госуслуги работают напрямую.</p>
                 </div>
-                <div class="feature-card">
+                <div class="feature-card glass-panel">
                     <div class="icon-box">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                     </div>
                     <h3>Установи и забудь</h3>
                     <p>Настроили один раз, и VPN работает в фоновом режиме. Не нужно включать вручную.</p>
                 </div>
-                <div class="feature-card">
+                <div class="feature-card glass-panel">
                     <div class="icon-box">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                     </div>
                     <h3>Полная скрытность</h3>
                     <p>Трафик маскируется под обычный HTTPS. Провайдер видит лишь стандартные пакеты.</p>
                 </div>
-                <div class="feature-card">
+                <div class="feature-card glass-panel">
                     <div class="icon-box">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
                     </div>
@@ -566,7 +578,7 @@
 
         <section id="critique">
             <h2>Почему массовые VPN <span class="accent">не выход</span>?</h2>
-            <div class="critique-box">
+            <div class="critique-box glass-panel">
                 <p>Популярные протоколы (Shadowsocks, Wireguard, VLESS) легко вычисляются и блокируются современными системами. Бесплатные сервисы перегружены, небезопасны и часто продают ваши данные. Мы предлагаем индивидуальный подход и протоколы нового поколения.</p>
             </div>
         </section>
@@ -574,19 +586,19 @@
         <section id="terms">
             <h2>Прозрачные <span class="accent">условия</span></h2>
             <div class="transparency-list">
-                <div class="list-item">
+                <div class="list-item glass-panel">
                     <strong>ОГРАНИЧЕНИЯ</strong>
                     Наше решение не помогает при полном отключении интернета («чебурнет»), так как ни один VPN не может обойти физическое отсутствие связи.
                 </div>
-                <div class="list-item">
+                <div class="list-item glass-panel">
                     <strong>ЛОКАЦИИ</strong>
                     По умолчанию устанавливаем Голландию или Польшу (обсуждается индивидуально). Оптимальные маршруты для РФ.
                 </div>
-                <div class="list-item">
+                <div class="list-item glass-panel">
                     <strong>МОДЕЛЬ ОПЛАТЫ</strong>
                     Вы платите единоразово за мою работу (настройку). Хостинг (сервер) вы оплачиваете напрямую провайдеру ежемесячно.
                 </div>
-                <div class="list-item">
+                <div class="list-item glass-panel">
                     <strong>ВАРИАНТЫ ХОСТИНГА</strong>
                     Мы рекомендуем надежных зарубежных провайдеров с оплатой картами РФ/СБП (от 5$ в месяц).
                 </div>
@@ -612,6 +624,15 @@
                     </button>
                     <div class="faq-content">
                         <p>Да, это одна из ключевых фишек. Наша настройка обеспечивает максимальную скорость вашего провайдера, достаточную для потокового видео в высоком качестве.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-trigger">
+                        А если Телеграм начнут блокировать всерьез, ваш VPN поможет?
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                    <div class="faq-content">
+                        <p>Да. В этом и смысл личного сервера. Мы используем протоколы, которые маскируют работу мессенджера под обычный веб-серфинг. Провайдер даже не поймет, что у вас запущен Телеграм — для него это будет выглядеть как открытие обычной страницы в браузере.</p>
                     </div>
                 </div>
                 <div class="faq-item">
@@ -645,7 +666,7 @@
         </section>
 
         <section id="pricing">
-            <div class="pricing-card">
+            <div class="pricing-card glass-panel">
                 <h2>Стоимость и <span class="accent">состав</span></h2>
                 <div class="price">2500₽ <span>/ единоразово</span></div>
                 <ul class="includes-list">
