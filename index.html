@@ -50,8 +50,8 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0.35;
-            filter: saturate(1.2) contrast(1.1) brightness(0.7);
+            opacity: 0.6; /* Увеличена яркость для видимости анимации */
+            filter: saturate(1.2) contrast(1.1); /* Убрано принудительное затемнение */
             will-change: src;
         }
 
@@ -61,11 +61,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at center, transparent 0%, var(--bg-color) 100%);
+            background: radial-gradient(circle at center, transparent 0%, var(--bg-color) 110%);
         }
 
         .container {
-            max-width: 1100px;
+            max-width: 1200px; /* Немного расширил для 4 блоков */
             margin: 0 auto;
             padding: 0 24px;
         }
@@ -184,20 +184,22 @@
             letter-spacing: -0.02em;
         }
 
-        /* Advantages Grid */
+        /* Advantages Grid - Возвращено в одну строку */
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
         }
 
         .feature-card {
             background: var(--glass-bg);
-            padding: 48px 40px;
-            border-radius: 32px;
+            padding: 40px 30px;
+            border-radius: 28px;
             border: 1px solid var(--glass-border);
             backdrop-filter: var(--glass-blur);
             transition: var(--transition);
+            display: flex;
+            flex-direction: column;
         }
 
         .feature-card:hover {
@@ -207,28 +209,29 @@
         }
 
         .icon-box {
-            width: 52px;
-            height: 52px;
+            width: 48px;
+            height: 48px;
             background: rgba(0, 242, 255, 0.08);
             border: 1px solid rgba(0, 242, 255, 0.2);
-            border-radius: 16px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 28px;
+            margin-bottom: 24px;
             color: var(--accent-cyan);
         }
 
         .feature-card h3 {
-            margin-bottom: 18px;
-            font-size: 20px;
+            margin-bottom: 16px;
+            font-size: 18px;
             font-weight: 600;
+            line-height: 1.3;
         }
 
         .feature-card p {
             color: var(--text-secondary);
-            font-size: 15px;
-            line-height: 1.7;
+            font-size: 14px;
+            line-height: 1.6;
         }
 
         /* Critique Section */
@@ -401,11 +404,20 @@
         }
 
         /* Responsive */
+        @media (max-width: 1100px) {
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         @media (max-width: 768px) {
             h1 { font-size: 44px; }
             h2 { font-size: 30px; }
             section { padding: 80px 0; }
             .pricing-card { padding: 50px 24px; }
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -457,28 +469,28 @@
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
                     </div>
                     <h3>Раздельное туннелирование</h3>
-                    <p>VPN работает только там, где нужно. Банковские приложения и госуслуги работают напрямую, без задержек.</p>
+                    <p>VPN работает только там, где нужно. Банковские приложения и госуслуги работают напрямую.</p>
                 </div>
                 <div class="feature-card">
                     <div class="icon-box">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                     </div>
                     <h3>Установи и забудь</h3>
-                    <p>Настроили один раз, и VPN работает в фоновом режиме. Не нужно постоянно включать и выключать его вручную.</p>
+                    <p>Настроили один раз, и VPN работает в фоновом режиме. Не нужно включать вручную.</p>
                 </div>
                 <div class="feature-card">
                     <div class="icon-box">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                     </div>
                     <h3>Полная скрытность</h3>
-                    <p>Трафик маскируется под обычный HTTPS. Провайдер не обнаруживает использование VPN, видя лишь стандартные пакеты.</p>
+                    <p>Трафик маскируется под обычный HTTPS. Провайдер видит лишь стандартные пакеты.</p>
                 </div>
                 <div class="feature-card">
                     <div class="icon-box">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
                     </div>
                     <h3>Умная маршрутизация</h3>
-                    <p>Автоматический обход блокировок без влияния на скорость внутри страны. Ощущается как чистый интернет.</p>
+                    <p>Автоматический обход блокировок без влияния на скорость внутри страны.</p>
                 </div>
             </div>
         </section>
@@ -624,6 +636,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             handleScrollAnimation();
+            // Предзагрузка всех кадров в кеш
             for (let i = 0; i < totalFrames; i++) {
                 const img = new Image();
                 img.src = `frames/frame_${String(i).padStart(2, '0')}_delay-0.1s.webp`;
