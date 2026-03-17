@@ -6,8 +6,8 @@
     <title>Hysteria 2 — Твой личный интернет без границ</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Используем Space Grotesk для IT-заголовков и Plus Jakarta Sans для основного текста -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Outfit для премиальных IT-заголовков, Plus Jakarta Sans для текста -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #030303;
@@ -15,6 +15,7 @@
             --glass-border: rgba(255, 255, 255, 0.1);
             --accent-cyan: #00f2ff;
             --accent-glow: rgba(0, 242, 255, 0.4);
+            --accent-red: rgba(255, 50, 50, 0.2);
             --text-primary: #ffffff;
             --text-secondary: rgba(255, 255, 255, 0.7);
             --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
@@ -38,272 +39,131 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        h1, h2, h3, .logo, .nav-link {
-            font-family: 'Space Grotesk', sans-serif;
+        h1, h2, h3, .logo, .nav-link, .ticker-item {
+            font-family: 'Outfit', sans-serif;
         }
 
         /* Preloader */
         #preloader {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 9999;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
             transition: opacity 0.8s ease;
         }
 
         #loader-text {
-            font-size: 12px;
-            letter-spacing: 5px;
-            margin-bottom: 20px;
-            color: var(--accent-cyan);
-            text-transform: uppercase;
+            font-size: 12px; letter-spacing: 5px; margin-bottom: 20px;
+            color: var(--accent-cyan); text-transform: uppercase;
         }
 
-        #loader-bar-bg {
-            width: 240px;
-            height: 2px;
-            background: rgba(255, 255, 255, 0.05);
-            position: relative;
-        }
+        #loader-bar-bg { width: 240px; height: 2px; background: rgba(255, 255, 255, 0.05); position: relative; }
+        #loader-bar-fill { position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: var(--accent-cyan); box-shadow: 0 0 15px var(--accent-cyan); transition: width 0.3s ease; }
+        #loader-percent { margin-top: 15px; font-size: 28px; font-weight: 300; }
 
-        #loader-bar-fill {
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 0%;
-            background: var(--accent-cyan);
-            box-shadow: 0 0 15px var(--accent-cyan);
-            transition: width 0.3s ease;
-        }
-
-        #loader-percent {
-            margin-top: 15px;
-            font-size: 28px;
-            font-weight: 300;
-        }
-
-        /* Анимированный фон */
+        /* Background Animation */
         #bg-canvas-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; overflow: hidden;
         }
 
         #bg-frame {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 1;
+            width: 100%; height: 100%; object-fit: cover; opacity: 1;
             filter: blur(4px) saturate(1.1) contrast(1.1) brightness(0.9);
             will-change: src, filter, opacity;
             transition: filter 0.2s linear;
         }
 
-        #bg-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(3, 3, 3, 0);
-        }
+        #bg-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 3, 3, 0); }
 
-        /* Навигация */
+        /* Navigation */
         header {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: calc(100% - 48px);
-            max-width: 1100px;
-            z-index: 1000;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 16px 32px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            width: calc(100% - 48px); max-width: 1100px; z-index: 1000;
+            background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border); border-radius: 20px;
+            padding: 16px 32px; display: flex; justify-content: space-between; align-items: center;
             box-shadow: var(--glass-shadow);
         }
 
-        .logo {
-            font-weight: 700;
-            font-size: 18px;
-            letter-spacing: 2px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-transform: uppercase;
-        }
+        .logo { font-weight: 800; font-size: 18px; letter-spacing: 2px; display: flex; align-items: center; gap: 10px; text-transform: uppercase; }
+        .logo-dot { width: 8px; height: 8px; background: var(--accent-cyan); border-radius: 2px; box-shadow: 0 0 10px var(--accent-cyan); }
+        nav { display: flex; gap: 32px; }
+        .nav-link { color: var(--text-secondary); text-decoration: none; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: var(--transition); }
+        .nav-link:hover { color: var(--accent-cyan); }
 
-        .logo-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--accent-cyan);
-            border-radius: 2px;
-            box-shadow: 0 0 10px var(--accent-cyan);
-        }
-
-        nav {
-            display: flex;
-            gap: 32px;
-        }
-
-        .nav-link {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: var(--transition);
-        }
-
-        .nav-link:hover {
-            color: var(--accent-cyan);
-        }
-
-        /* Кнопка "В начало" */
+        /* Scroll Top Button */
         #scroll-top {
-            position: fixed;
-            bottom: 40px;
-            right: 40px;
-            width: 54px;
-            height: 54px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-            box-shadow: var(--glass-shadow);
-            color: var(--accent-cyan);
+            position: fixed; bottom: 40px; right: 40px; width: 54px; height: 54px;
+            background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border);
+            border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            cursor: pointer; z-index: 1000; opacity: 0; visibility: hidden;
+            transition: var(--transition); box-shadow: var(--glass-shadow); color: var(--accent-cyan);
         }
+        #scroll-top.visible { opacity: 1; visibility: visible; }
+        #scroll-top:hover { border-color: var(--accent-cyan); box-shadow: 0 0 20px -5px var(--accent-glow); transform: translateY(-5px); }
 
-        #scroll-top.visible {
-            opacity: 1;
-            visibility: visible;
+        /* Ticker */
+        .ticker-container {
+            width: 100vw; margin-left: calc(-50vw + 50%); overflow: hidden;
+            background: rgba(255, 255, 255, 0.02); border-top: 1px solid var(--glass-border);
+            border-bottom: 1px solid var(--glass-border); padding: 20px 0;
+            margin-bottom: 60px; backdrop-filter: blur(10px);
         }
+        .ticker-wrapper { display: flex; white-space: nowrap; animation: ticker 30s linear infinite; }
+        .ticker-item { padding: 0 40px; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 4px; color: var(--text-secondary); display: flex; align-items: center; gap: 15px; }
+        .ticker-item::after { content: "•"; color: var(--accent-cyan); text-shadow: 0 0 10px var(--accent-cyan); }
+        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-        #scroll-top:hover {
-            border-color: var(--accent-cyan);
-            box-shadow: 0 0 20px -5px var(--accent-glow);
-            transform: translateY(-5px);
-        }
-
-        /* Контейнер */
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 24px;
-            position: relative;
-            z-index: 1;
-        }
-
-        section {
-            padding: 120px 0;
-        }
+        /* Layout */
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+        section { padding: 120px 0; }
 
         /* Hero Section */
-        .hero {
-            padding: 180px 0 140px;
-            text-align: center;
-        }
-
+        .hero { padding: 200px 0 140px; text-align: center; }
+        
         h1 {
-            font-size: clamp(40px, 8vw, 64px);
-            font-weight: 700;
-            line-height: 1.15;
-            margin-bottom: 28px;
-            letter-spacing: -0.03em;
-            text-shadow: 0 2px 15px rgba(0, 0, 0, 0.8);
+            font-size: clamp(48px, 7.5vw, 82px); /* Скорректирован размер для фикса в 2 строки */
+            font-weight: 800;
+            line-height: 1.05;
+            margin: 0 auto 34px;
+            letter-spacing: -0.04em;
+            max-width: 1200px; /* Расширен контейнер для 2 строк */
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
         }
 
-        .accent { color: var(--accent-cyan); }
+        .accent { color: var(--accent-cyan); text-shadow: 0 0 20px var(--accent-glow); }
 
         .hero p {
-            font-size: 19px;
+            font-size: 21px;
             color: var(--text-primary);
-            max-width: 760px; /* Ограничение для 2 строк */
-            margin: 0 auto 48px;
+            max-width: 1000px; /* Расширен контейнер для 2 строк */
+            margin: 0 auto 54px;
             font-weight: 400;
             text-shadow: 0 2px 15px rgba(0, 0, 0, 0.8);
         }
 
-        .hero-chips {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-bottom: 54px;
-        }
-
+        .hero-chips { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 64px; }
         .chip {
-            padding: 10px 20px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--glass-border);
-            border-radius: 100px;
-            font-size: 13px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            backdrop-filter: var(--glass-blur);
-            box-shadow: var(--glass-shadow);
-            transition: var(--transition);
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
+            padding: 12px 24px; background: rgba(0, 0, 0, 0.4); border: 1px solid var(--glass-border);
+            border-radius: 100px; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 10px;
+            backdrop-filter: var(--glass-blur); box-shadow: var(--glass-shadow); transition: var(--transition);
         }
-
-        .chip:hover {
-            border-color: var(--accent-cyan);
-            box-shadow: 0 0 20px -5px var(--accent-glow);
-        }
-
+        .chip:hover { border-color: var(--accent-cyan); box-shadow: 0 0 20px -5px var(--accent-glow); }
         .chip svg { color: var(--accent-cyan); }
 
         .cta-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 14px;
-            padding: 22px 48px;
-            background: var(--accent-cyan);
-            color: #000;
-            text-decoration: none;
-            border-radius: 18px;
-            font-weight: 700;
-            font-size: 16px;
-            letter-spacing: 0.5px;
+            display: inline-flex; align-items: center; gap: 14px;
+            padding: 24px 60px; background: var(--accent-cyan);
+            color: #000; text-decoration: none; border-radius: 20px;
+            font-weight: 800; font-size: 18px; letter-spacing: 1px;
             box-shadow: 0 10px 40px -10px var(--accent-glow);
-            transition: var(--transition);
-            text-transform: uppercase;
+            transition: var(--transition); text-transform: uppercase;
         }
+        .cta-button:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 20px 60px -5px var(--accent-glow); }
 
-        .cta-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 50px -5px var(--accent-glow);
-        }
-
-        /* Общие стеклянные панели с глубиной и подсветкой */
+        /* Glass Panels */
         .glass-panel {
             background: rgba(0, 0, 0, 0.45);
             border: 1px solid var(--glass-border);
@@ -311,224 +171,84 @@
             box-shadow: var(--glass-shadow);
             transition: var(--transition);
         }
-
         .glass-panel:hover {
             border-color: rgba(0, 242, 255, 0.4);
             box-shadow: 0 0 40px -10px var(--accent-glow), var(--glass-shadow);
             background: rgba(0, 0, 0, 0.55);
         }
 
-        h2 {
-            font-size: 42px;
-            text-align: center;
-            margin-bottom: 70px;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            text-shadow: 0 2px 15px rgba(0, 0, 0, 0.8);
-        }
+        h2 { font-size: 42px; text-align: center; margin-bottom: 70px; font-weight: 700; letter-spacing: -0.02em; text-shadow: 0 2px 15px rgba(0, 0, 0, 0.8); }
 
-        /* Блок преимуществ */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-        }
-
-        .feature-card {
-            padding: 40px 30px;
-            border-radius: 32px;
-            display: flex;
-            flex-direction: column;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
-        }
-
+        /* Features */
+        .features-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .feature-card { padding: 40px 30px; border-radius: 32px; display: flex; flex-direction: column; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8); }
         .feature-card:hover { transform: translateY(-10px); }
+        .icon-box { width: 48px; height: 48px; background: rgba(0, 242, 255, 0.1); border: 1px solid rgba(0, 242, 255, 0.2); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 28px; color: var(--accent-cyan); }
+        .feature-card h3 { margin-bottom: 18px; font-size: 20px; font-weight: 700; line-height: 1.2; }
+        .feature-card p { color: var(--text-secondary); font-size: 14.5px; line-height: 1.7; }
 
-        .icon-box {
-            width: 48px;
-            height: 48px;
-            background: rgba(0, 242, 255, 0.1);
-            border: 1px solid rgba(0, 242, 255, 0.2);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 28px;
-            color: var(--accent-cyan);
+        /* Critique Section */
+        .critique-container { max-width: 900px; margin: 0 auto; }
+        .critique-box { 
+            padding: 60px 50px; 
+            border-radius: 40px; 
+            text-align: center; 
+            border: 1px solid rgba(255, 50, 50, 0.2);
+            background: linear-gradient(145deg, rgba(255, 50, 50, 0.05) 0%, rgba(0, 0, 0, 0.5) 100%);
+            box-shadow: 0 0 50px -20px var(--accent-red), var(--glass-shadow);
         }
-
-        .feature-card h3 {
-            margin-bottom: 18px;
-            font-size: 20px;
-            font-weight: 700;
+        .critique-box:hover {
+            border-color: rgba(255, 50, 50, 0.4);
+            box-shadow: 0 0 60px -10px var(--accent-red), var(--glass-shadow);
         }
+        .critique-box p { font-size: 19px; color: #fff; line-height: 1.8; }
 
-        .feature-card p {
-            color: var(--text-secondary);
-            font-size: 14.5px;
-            line-height: 1.7;
+        /* Transparency List */
+        .transparency-list { display: grid; gap: 24px; max-width: 950px; margin: 0 auto; }
+        .list-item { 
+            padding: 40px; 
+            border-radius: 32px; 
+            border-left: 4px solid var(--accent-cyan);
+            background: rgba(0, 0, 0, 0.5);
+            display: grid;
+            gap: 12px;
         }
+        .list-item strong { color: var(--accent-cyan); text-transform: uppercase; font-size: 13px; letter-spacing: 2px; font-weight: 800; text-shadow: 0 0 10px rgba(0, 242, 255, 0.3); }
+        .list-item p { font-size: 16.5px; color: #fff; }
 
-        /* Блок критики */
-        .critique-box {
-            padding: 80px 40px;
-            border-radius: 40px;
-            text-align: center;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
-        }
-
-        .critique-box p {
-            max-width: 850px;
-            margin: 0 auto;
-            font-size: 19px;
-            color: #fff;
-            font-weight: 400;
-        }
-
-        /* Прозрачные условия */
-        .transparency-list {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-            max-width: 850px;
-            margin: 0 auto;
-        }
-
-        .list-item {
-            padding: 32px;
-            border-radius: 24px;
-            border-left: 3px solid var(--accent-cyan);
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
-        }
-
-        .list-item strong {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--accent-cyan);
-            text-transform: uppercase;
-            font-size: 12px;
-            letter-spacing: 2px;
-            font-weight: 800;
-        }
-
-        /* FAQ Аккордеон */
-        .faq-container {
-            max-width: 850px;
-            margin: 0 auto;
-        }
-
-        .faq-item {
-            border-bottom: 1px solid var(--glass-border);
-            transition: var(--transition);
-        }
-
+        /* FAQ */
+        .faq-container { max-width: 850px; margin: 0 auto; }
+        .faq-item { border-bottom: 1px solid var(--glass-border); transition: var(--transition); }
         .faq-trigger {
-            width: 100%;
-            padding: 30px 0;
-            background: none;
-            border: none;
-            color: #fff;
-            text-align: left;
-            font-size: 19px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-family: inherit;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+            width: 100%; padding: 30px 0; background: none; border: none; color: #fff;
+            text-align: left; font-size: 19px; font-weight: 600; cursor: pointer;
+            display: flex; justify-content: space-between; align-items: center;
+            font-family: inherit; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
         }
-
-        .faq-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: var(--transition);
-            color: var(--text-secondary);
-            font-size: 16.5px;
-        }
-
-        .faq-item.active .faq-content {
-            max-height: 300px;
-            padding-bottom: 32px;
-        }
-
+        .faq-content { max-height: 0; overflow: hidden; transition: var(--transition); color: var(--text-secondary); font-size: 16.5px; }
+        .faq-item.active .faq-content { max-height: 400px; padding-bottom: 32px; }
         .faq-item.active svg { transform: rotate(180deg); }
         .faq-trigger svg { transition: var(--transition); color: var(--accent-cyan); }
 
-        /* Карточка стоимости */
-        .pricing-card {
-            border: 1px solid var(--accent-cyan);
-            padding: 80px 40px;
-            border-radius: 48px;
-            text-align: center;
-            max-width: 650px;
-            margin: 0 auto;
-            position: relative;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
-        }
-
-        .price {
-            font-size: 80px;
-            font-weight: 800;
-            margin-bottom: 10px;
-            letter-spacing: -0.04em;
-        }
-
+        /* Pricing Card */
+        .pricing-card { border: 1px solid var(--accent-cyan); padding: 80px 40px; border-radius: 48px; text-align: center; max-width: 650px; margin: 0 auto; position: relative; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8); }
+        .price { font-size: 80px; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.04em; }
         .price span { font-size: 22px; font-weight: 400; color: var(--text-secondary); }
-
-        .includes-list {
-            text-align: left;
-            list-style: none;
-            margin: 40px 0;
-        }
-
-        .includes-list li {
-            margin-bottom: 18px;
-            display: flex;
-            align-items: flex-start;
-            gap: 16px;
-            color: #fff;
-            font-size: 17px;
-            font-weight: 500;
-        }
-
+        .includes-list { text-align: left; list-style: none; margin: 40px 0; }
+        .includes-list li { margin-bottom: 18px; display: flex; align-items: flex-start; gap: 16px; color: #fff; font-size: 17px; font-weight: 500; }
         .includes-list li svg { color: var(--accent-cyan); flex-shrink: 0; margin-top: 4px; }
 
-        /* Подвал */
-        footer {
-            padding: 100px 0;
-            border-top: 1px solid var(--glass-border);
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
-
-        .footer-links {
-            margin-bottom: 32px;
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-        }
-
-        .footer-links a {
-            color: #fff;
-            text-decoration: none;
-            transition: var(--transition);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
+        footer { padding: 100px 0; border-top: 1px solid var(--glass-border); text-align: center; color: var(--text-secondary); font-size: 14px; }
+        .footer-links { margin-bottom: 32px; display: flex; justify-content: center; gap: 40px; }
+        .footer-links a { color: #fff; text-decoration: none; transition: var(--transition); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
         .footer-links a:hover { color: var(--accent-cyan); }
 
-        /* Адаптивность */
         @media (max-width: 1100px) {
             .features-grid { grid-template-columns: repeat(2, 1fr); }
             header { display: none; }
         }
-
         @media (max-width: 768px) {
-            h1 { font-size: 44px; }
+            h1 { font-size: 48px; }
             h2 { font-size: 32px; }
             section { padding: 80px 0; }
             .pricing-card { padding: 50px 24px; }
@@ -541,7 +261,7 @@
 
     <!-- Прелоадер -->
     <div id="preloader">
-        <div id="loader-text">Initializing Systems</div>
+        <div id="loader-text">Initializing Secure Systems</div>
         <div id="loader-bar-bg"><div id="loader-bar-fill"></div></div>
         <div id="loader-percent">0%</div>
     </div>
@@ -571,21 +291,26 @@
     </div>
 
     <div class="container">
+        <!-- Hero Section -->
         <section class="hero">
-            <h1>Твой личный <span class="accent">интернет</span><br>без границ и <span class="accent">цензуры</span></h1>
-            <p>Настрою персональный VPN на базе Hysteria 2 за 1 час. Смотрите YouTube в 4K и открывайте любые заблокированные сервисы на полной скорости вашего провайдера.</p>
+            <h1>Твой личный <span class="accent">интернет</span> без границ и <span class="accent">цензуры</span></h1>
+            <p>Настрою персональный VPN на базе Hysteria 2 за 1 час. Смотрите YouTube в 4K, Telegram без ограничений и открывайте любые сервисы на полной скорости вашего провайдера.</p>
             
             <div class="hero-chips">
                 <div class="chip">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
                     YouTube в 4K
                 </div>
                 <div class="chip">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                    Telegram без пауз
+                </div>
+                <div class="chip">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                     Личный IP
                 </div>
                 <div class="chip">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
                     Full Speed
                 </div>
             </div>
@@ -596,6 +321,34 @@
             </a>
         </section>
 
+        <!-- Бегущая строка сервисов -->
+        <div class="ticker-container">
+            <div class="ticker-wrapper">
+                <div class="ticker-item">YouTube</div>
+                <div class="ticker-item">Telegram</div>
+                <div class="ticker-item">WhatsApp</div>
+                <div class="ticker-item">Discord</div>
+                <div class="ticker-item">ChatGPT</div>
+                <div class="ticker-item">Twitter</div>
+                <div class="ticker-item">Instagram</div>
+                <div class="ticker-item">Facebook</div>
+                <div class="ticker-item">Canva</div>
+                <div class="ticker-item">Figma</div>
+                <!-- Дубликат -->
+                <div class="ticker-item">YouTube</div>
+                <div class="ticker-item">Telegram</div>
+                <div class="ticker-item">WhatsApp</div>
+                <div class="ticker-item">Discord</div>
+                <div class="ticker-item">ChatGPT</div>
+                <div class="ticker-item">Twitter</div>
+                <div class="ticker-item">Instagram</div>
+                <div class="ticker-item">Facebook</div>
+                <div class="ticker-item">Canva</div>
+                <div class="ticker-item">Figma</div>
+            </div>
+        </div>
+
+        <!-- Технологии -->
         <section id="advantages">
             <h2>Технологии, которые <span class="accent">работают</span></h2>
             <div class="features-grid">
@@ -610,7 +363,8 @@
                     <div class="icon-box">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                     </div>
-                    <h3>Установи и забудь</h3>
+                    <!-- Фикс: Заголовок в 2 строки по запросу -->
+                    <h3>Установи <br> и забудь</h3>
                     <p>Настроили один раз, и VPN работает в фоновом режиме. Не нужно включать вручную.</p>
                 </div>
                 <div class="feature-card glass-panel">
@@ -630,35 +384,40 @@
             </div>
         </section>
 
+        <!-- Почему массовые VPN не выход -->
         <section id="critique">
             <h2>Почему массовые VPN <span class="accent">не выход</span>?</h2>
-            <div class="critique-box glass-panel">
-                <p>Популярные протоколы (Shadowsocks, Wireguard, VLESS) легко вычисляются и блокируются современными системами. Мы используем маскировку под HTTPS — для провайдера это выглядит как обычный просмотр сайта, а не работа VPN. Это позволяет обходить даже самые жесткие ограничения и гарантирует стабильность связи.</p>
+            <div class="critique-container">
+                <div class="critique-box glass-panel">
+                    <p>Популярные протоколы (Shadowsocks, Wireguard, VLESS) легко вычисляются и блокируются современными системами. Мы используем маскировку под HTTPS — для провайдера это выглядит как обычный просмотр сайта, а не работа VPN. Это позволяет обходить даже самые жесткие ограничения и гарантирует стабильность связи в любых условиях.</p>
+                </div>
             </div>
         </section>
 
+        <!-- Прозрачные условия -->
         <section id="terms">
             <h2>Прозрачные <span class="accent">условия</span></h2>
             <div class="transparency-list">
                 <div class="list-item glass-panel">
                     <strong>ОГРАНИЧЕНИЯ</strong>
-                    Наше решение не помогает при полном отключении интернета («чебурнет»), так как ни один VPN не может обойти физическое отсутствие связи.
+                    <p>Наше решение не помогает при полном отключении интернета («чебурнет»), так как ни один VPN не может обойти физическое отсутствие связи.</p>
                 </div>
                 <div class="list-item glass-panel">
                     <strong>ЛОКАЦИИ</strong>
-                    По умолчанию устанавливаем Голландию или Польшу (обсуждается индивидуально). Оптимальные маршруты для РФ.
+                    <p>По умолчанию устанавливаем Голландию или Польшу. Оптимальные маршруты для стабильного пинга из любой точки РФ.</p>
                 </div>
                 <div class="list-item glass-panel">
                     <strong>МОДЕЛЬ ОПЛАТЫ</strong>
-                    Вы платите единоразово за мою работу (настройку). Хостинг (сервер) вы оплачиваете напрямую провайдеру ежемесячно.
+                    <p>Вы платите единоразово за мою работу (настройку). Хостинг (сервер) вы оплачиваете напрямую провайдеру ежемесячно.</p>
                 </div>
                 <div class="list-item glass-panel">
                     <strong>ВАРИАНТЫ ХОСТИНГА</strong>
-                    Мы рекомендуем надежных зарубежных провайдеров с оплатой картами РФ/СБП (от 5$ в месяц).
+                    <p>Мы рекомендуем надежных зарубежных провайдеров с оплатой картами РФ/СБП (от 5$ в месяц). Вы контролируете свои расходы.</p>
                 </div>
             </div>
         </section>
 
+        <!-- FAQ -->
         <section id="faq">
             <h2>Часто задаваемые <span class="accent">вопросы</span></h2>
             <div class="faq-container">
@@ -719,6 +478,7 @@
             </div>
         </section>
 
+        <!-- Стоимость -->
         <section id="pricing">
             <div class="pricing-card glass-panel">
                 <h2>Стоимость и <span class="accent">состав</span></h2>
@@ -730,7 +490,7 @@
                     <li><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Полная настройка в течение часа</li>
                     <li><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Оплата строго по факту успеха</li>
                 </ul>
-                <a href="https://t.me/your_username" class="cta-button" style="width: 100%; justify-content: center;">Заказать настройку</a>
+                <a href="https://t.me/your_username" class="cta-button">Заказать настройку</a>
             </div>
         </section>
 
@@ -755,70 +515,44 @@
         let lastFrame = -1;
         let loadedCount = 0;
 
-        /**
-         * Управление анимацией и динамическими эффектами
-         */
         function handleScrollEffect() {
             if (!frameElement || !overlayElement) return;
-
             const scrollY = window.scrollY;
             const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
             const scrollFraction = Math.max(0, Math.min(1, scrollY / maxScroll));
 
-            // Смена кадров
             const frameIndex = Math.floor(scrollFraction * (totalFrames - 1));
             if (frameIndex !== lastFrame) {
-                // Если ваши файлы имеют 3 цифры (frame_000), замените 2 на 3 ниже
                 const formattedIndex = String(frameIndex).padStart(2, '0');
                 frameElement.src = `frames/frame_${formattedIndex}_delay-0.1s.webp`;
                 lastFrame = frameIndex;
             }
 
-            // Динамические эффекты фона
             const darkFactor = scrollFraction * 0.6;
             overlayElement.style.background = `rgba(3, 3, 3, ${darkFactor})`;
-            
-            // Динамический блюр (стены до дымки)
             const blurFactor = 4 + (scrollFraction * 16);
             const brightnessFactor = 1.0 - (scrollFraction * 0.4);
             frameElement.style.filter = `blur(${blurFactor}px) saturate(1.1) brightness(${brightnessFactor})`;
             frameElement.style.opacity = 1.0 - (scrollFraction * 0.3);
 
-            // Кнопка вверх
-            if (scrollY > 500) {
-                scrollTop.classList.add('visible');
-            } else {
-                scrollTop.classList.remove('visible');
-            }
+            if (scrollY > 500) scrollTop.classList.add('visible');
+            else scrollTop.classList.remove('visible');
         }
 
-        /**
-         * Предзагрузка кадров с улучшенным логированием ошибок
-         */
         function preloadFrames() {
             for (let i = 0; i < totalFrames; i++) {
                 const img = new Image();
                 const frameSrc = `frames/frame_${String(i).padStart(2, '0')}_delay-0.1s.webp`;
                 img.src = frameSrc;
-                
                 img.onload = () => {
                     loadedCount++;
                     const percent = Math.floor((loadedCount / totalFrames) * 100);
                     loaderBarFill.style.width = percent + '%';
                     loaderPercent.innerText = percent + '%';
-
-                    if (loadedCount === totalFrames) {
-                        setTimeout(() => {
-                            preloader.style.opacity = '0';
-                            setTimeout(() => preloader.style.display = 'none', 800);
-                            handleScrollEffect();
-                        }, 500);
-                    }
+                    if (loadedCount === totalFrames) preloadComplete();
                 };
-                
                 img.onerror = () => {
                     console.error('Ошибка загрузки кадра:', frameSrc);
-                    // Засчитываем как загруженное, чтобы не блокировать прелоадер в случае потери 1-2 файлов
                     loadedCount++;
                     if (loadedCount === totalFrames) preloadComplete();
                 };
@@ -833,7 +567,6 @@
             }, 500);
         }
 
-        // FAQ
         document.querySelectorAll('.faq-trigger').forEach(trigger => {
             trigger.addEventListener('click', () => {
                 const parent = trigger.parentElement;
@@ -843,15 +576,8 @@
             });
         });
 
-        // Действие кнопки вверх
-        scrollTop.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        window.addEventListener('scroll', () => {
-            requestAnimationFrame(handleScrollEffect);
-        }, { passive: true });
-
+        scrollTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+        window.addEventListener('scroll', () => requestAnimationFrame(handleScrollEffect), { passive: true });
         document.addEventListener('DOMContentLoaded', preloadFrames);
     </script>
 </body>
